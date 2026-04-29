@@ -6,9 +6,31 @@ WIZnet Serial to Ethernet(S2E) module based on W7500 chip, WIZ107/108SR S2E comp
 - 48(W) x 30mm(L) x 18mm(H)
 <!-- WIZ750SR pic -->
 <p align="center">
-  <img width="35%" src="https://www.wiznet.io/wp-content/uploads/2016/11/WIZ750SR_QuarterView.png" />
+  <img width="35%" src="doc/img/WIZ750SR.png" />
 </p>
 
+## About this project
+This firmware is a fork from Wiznet's WIZ750SR firware, whose purpose is modifying and building with opensource  tools.
+
+The SDK, IDE and build system has been migrated from ARM Keil 5 to GNU-ARM-GCC, MS VScode and CMake.  ARM licensed tools and Microsoft Windows are no longer required.
+
+## Project status
+
+- [x] Migration
+- [x] Basic testing
+- [ ] Extensive testing
+
+## Project requirements
+
+- CMake. From your linux distro or [cmake.org website](https://cmake.org/download/). 
+- ARM GNU toolchain. From [ARM developer website](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads), choose _AArch32 bare-metal target (arm-none-eabi)_ for your platform.
+- A C/CMake-aware IDE, such as [Microsoft Visual Studio Code](https://code.visualstudio.com/download). For easy editing and building, [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) is recommanded.
+
+## Migration guide :  ARM-CLang to GCC
+
+:warning: Migrating from ARM-CLang-compiled firware to GCC-compiled firmware requires a full (Boot+App) firwmare upgrade with ISP programmer or WZ750SR-EVB board. Migrating only the App part of the firware via OTA will fail. 
+
+Subsequent App updates can be done OTA.  
 
 ## WIZ750SR EVB (Separate purchases)
 
@@ -26,10 +48,10 @@ WIZnet Serial to Ethernet(S2E) module based on W7500 chip, WIZ107/108SR S2E comp
 
 <!-- WIZ750SR EVB pic -->
 <p align="center">
-  <img width="60%" src="http://www.wiznet.io/wp-content/uploads/2016/11/1WIZ750SR-TTL-EVB_.png" />
+  <img width="60%" src="doc/img/WIZ750SR-EVB(RS232TTL).png" />
 </p>
  
-For more details, please refer to [WIZ750SR document page](https://docs.wiznet.io/Product/S2E-Module/WIZ750SR/) in [WIZnet Documents](https://docs.wiznet.io/).
+For more details, please refer to [WIZ750SR document page](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/datasheet#wiz750sr-evb) in [WIZnet Documents](https://docs.wiznet.io/).
  
  
 ## Features
@@ -44,11 +66,11 @@ For more details, please refer to [WIZ750SR document page](https://docs.wiznet.i
   - WIZ750SR-TTL: TTL Version
   - WIZ750SR-RS232: RS-232 Version
   - WIZ750SR-RS485: RS-485/422 Version
-- For more details, please refer to the [WIZ750SR document page](https://docs.wiznet.io/Product/S2E-Module/WIZ750SR/)
+- For more details, please refer to the [WIZ750SR document page](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/)
  
  
 ## Hardware material, Documents and Others
-Various materials are could be found at [WIZ750SR document page](https://docs.wiznet.io/Product/S2E-Module/WIZ750SR/) in [WIZnet Documents](https://docs.wiznet.io/).
+Various materials are could be found at [WIZ750SR document page](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/) in [WIZnet Documents](https://docs.wiznet.io/).
 - Documents
   - Overview
   - Getting Started Guide
@@ -69,12 +91,13 @@ These are Firmware projects (source code) based on Keil IDE for ARM (version 5)
   - Application (App)
   - Boot
 - WIZ750SR operation manual
-  - [WIZ750SR Command Manual](https://docs.wiznet.io/Product/S2E-Module/WIZ750SR/command-manual-EN)
-  - [WIZ750SR Configuration Tool Manual](https://docs.wiznet.io/Product/S2E-Module/WIZ750SR/configuration-tool-manual-new-EN)
+  - [WIZ750SR Manual](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/users-manual-EN)
+  - [WIZ750SR Command Manual](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/command-manual-EN)
+  - [WIZ750SR Configuration Tool Manual](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/configuration-tool-manual-new-EN)
  
  
 ## Tool
-- [ISP Tool](https://docs.wiznet.io/Product/iMCU/W7500/documents/appnote/how-to-use-isp-tool)
+- [ISP Tool](https://docs.wiznet.io/Product/Modules/Serial-to-Ethernet-Module/WIZ750SR/download#w7500p-isp-tool)
 - [Configuration Tool (GUI)](https://github.com/Wiznet/WIZnet-S2E-Tool-GUI) (New!)
 - [Configuration Tool (CLI)](https://github.com/Wiznet/WIZnet-S2E-Tool)
 - [WIZVSP](https://docs.wiznet.io/Product/S2E-Module/WIZ750SR/download#wiz-vsp) 
