@@ -33,6 +33,7 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 extern void TimingDelay_Decrement(void);
+extern void xMBRTUTimerT35Expired(void);
 /* Private functions ---------------------------------------------------------*/
 
 /******************************************************************************/
@@ -44,39 +45,45 @@ extern void TimingDelay_Decrement(void);
   * @param  None
   * @retval None
   */
-__weak void NMI_Handler(void)
-{}
+// Use the implementation from µOS, which is already weak. 
+// __attribute__((weak)) void NMI_Handler(void)
+// {}
 
 /**
   * @brief  This function handles Hard Fault exception.
   * @param  None
   * @retval None
   */
-__weak void HardFault_Handler(void)
-{}
+// Use the implementation from µOS, which is already weak. 
+//  __attribute__((weak)) void HardFault_Handler(void)
+// {}
 
 /**
   * @brief  This function handles SVCall exception.
   * @param  None
   * @retval None
   */
-__weak void SVC_Handler(void)
-{}
+// Use the implementation from µOS, which is already weak. 
+// __attribute__((weak)) void SVC_Handler(void)
+// {}
 
 /**
   * @brief  This function handles PendSV_Handler exception.
   * @param  None
   * @retval None
   */
-__weak void PendSV_Handler(void)
-{}
+// Use the implementation from µOS, which is already weak. 
+// __attribute__((weak)) void PendSV_Handler(void)
+// {}
 
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
   */
-__weak void SysTick_Handler(void)
+// Here is the real implementation 
+// (not weak, to override the weak implementation from µOS)
+void SysTick_Handler(void)
 {
 	TimingDelay_Decrement();
 }
@@ -92,7 +99,7 @@ __weak void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void SSP0_Handler(void)
+__attribute__((weak)) void SSP0_Handler(void)
 {}
 
 /**
@@ -100,7 +107,7 @@ __weak void SSP0_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void SSP1_Handler(void)
+__attribute__((weak)) void SSP1_Handler(void)
 {}
 
 
@@ -109,7 +116,7 @@ __weak void SSP1_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void UART0_Handler(void)
+void UART0_Handler(void)
 {
 	S2E_UART_IRQ_Handler(UART0);
 }
@@ -120,7 +127,7 @@ __weak void UART0_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void UART1_Handler(void)
+void UART1_Handler(void)
 {
 	S2E_UART_IRQ_Handler(UART1);
 }
@@ -131,7 +138,7 @@ __weak void UART1_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void UART2_Handler(void)
+__attribute__((weak)) void UART2_Handler(void)
 {}
 
 
@@ -140,7 +147,7 @@ __weak void UART2_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void I2C0_Handler(void)
+__attribute__((weak)) void I2C0_Handler(void)
 {}
 
 
@@ -149,7 +156,7 @@ __weak void I2C0_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void I2C1_Handler(void)
+__attribute__((weak)) void I2C1_Handler(void)
 {}
 
 
@@ -158,7 +165,7 @@ __weak void I2C1_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PORT0_Handler(void)
+__attribute__((weak)) void PORT0_Handler(void)
 {}
 
 
@@ -167,7 +174,7 @@ __weak void PORT0_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PORT1_Handler(void)
+__attribute__((weak)) void PORT1_Handler(void)
 {}
 
 
@@ -176,7 +183,7 @@ __weak void PORT1_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PORT2_Handler(void)
+__attribute__((weak)) void PORT2_Handler(void)
 {}
 
 
@@ -185,7 +192,7 @@ __weak void PORT2_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PORT3_Handler(void)
+__attribute__((weak)) void PORT3_Handler(void)
 {}
 
 
@@ -194,7 +201,7 @@ __weak void PORT3_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void DMA_Handler(void)
+__attribute__((weak)) void DMA_Handler(void)
 {}
 
 
@@ -203,7 +210,7 @@ __weak void DMA_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void DUALTIMER0_Handler(void)
+void DUALTIMER0_Handler(void)
 {
 	Timer_IRQ_Handler();
 }
@@ -214,7 +221,7 @@ __weak void DUALTIMER0_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void DUALTIMER1_Handler(void)
+void DUALTIMER1_Handler(void)
 {
   xMBRTUTimerT35Expired();
 }
@@ -225,7 +232,7 @@ __weak void DUALTIMER1_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM0_Handler(void)
+__attribute__((weak)) void PWM0_Handler(void)
 {}
 
 /**
@@ -233,7 +240,7 @@ __weak void PWM0_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM1_Handler(void)
+__attribute__((weak)) void PWM1_Handler(void)
 {}
 
 /**
@@ -241,7 +248,7 @@ __weak void PWM1_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM2_Handler(void)
+__attribute__((weak)) void PWM2_Handler(void)
 {}
 
 /**
@@ -249,7 +256,7 @@ __weak void PWM2_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM3_Handler(void)
+__attribute__((weak)) void PWM3_Handler(void)
 {}
 
 /**
@@ -257,7 +264,7 @@ __weak void PWM3_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM4_Handler(void)
+__attribute__((weak)) void PWM4_Handler(void)
 {}
 
 /**
@@ -265,7 +272,7 @@ __weak void PWM4_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM5_Handler(void)
+__attribute__((weak)) void PWM5_Handler(void)
 {}
 
 /**
@@ -273,7 +280,7 @@ __weak void PWM5_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM6_Handler(void)
+__attribute__((weak)) void PWM6_Handler(void)
 {}
 
 /**
@@ -281,14 +288,15 @@ __weak void PWM6_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void PWM7_Handler(void)
+__attribute__((weak)) void PWM7_Handler(void)
 {}
+
 /**
   * @brief  This function handles RTC Handler.
   * @param  None
   * @retval None
   */
-__weak void RTC_Handler(void)
+__attribute__((weak)) void RTC_Handler(void)
 {}
 
 /**
@@ -296,7 +304,7 @@ __weak void RTC_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void ADC_Handler(void)
+__attribute__((weak)) void ADC_Handler(void)
 {}
 
 /**
@@ -304,7 +312,7 @@ __weak void ADC_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void WZTOE_Handler(void)
+__attribute__((weak)) void WZTOE_Handler(void)
 {}
 
 /**
@@ -312,7 +320,7 @@ __weak void WZTOE_Handler(void)
   * @param  None
   * @retval None
   */
-__weak void EXTI_Handler(void)
+__attribute__((weak)) void EXTI_Handler(void)
 {}
 
 

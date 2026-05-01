@@ -197,6 +197,7 @@ void DMA_Handler(void)
   */
 void DUALTIMER0_Handler(void)
 {
+	// Not used in Boot mode
 	//Timer_IRQ_Handler();
 }
 

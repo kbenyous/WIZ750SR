@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "common.h"
 #include "W7500x_wztoe.h"
 #include "W7500x_gpio.h"

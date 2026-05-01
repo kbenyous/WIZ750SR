@@ -2,7 +2,7 @@
 #include "common.h"
 #include "W7500x_uart.h"
 #include "W7500x_board.h"
-#include "configdata.h"
+#include "ConfigData.h"
 #include "uartHandler.h"
 
 /* Private typedef -----------------------------------------------------------*/

@@ -22,9 +22,18 @@ The SDK, IDE and build system has been migrated from ARM Keil 5 to GNU-ARM-GCC, 
 
 ## Project requirements
 
-- CMake. From your linux distro or [cmake.org website](https://cmake.org/download/). 
+- CMake. From your Linux distro or [cmake.org website](https://cmake.org/download/). 
 - ARM GNU toolchain. From [ARM developer website](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads), choose _AArch32 bare-metal target (arm-none-eabi)_ for your platform.
 - A C/CMake-aware IDE, such as [Microsoft Visual Studio Code](https://code.visualstudio.com/download). For easy editing and building, [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) is recommanded.
+- srec_cat for concatenating hex files. Part of the [SRecord](https://srecord.sourceforge.net/) collection of tools for manipulating EPROM load files. Also available in most Linux distros.
+
+## How to build
+
+Using VScode, edit CMakePresets.json and change the ARM_TOOLCHAIN_DIR cache variable.
+
+Build using CMake (command palette, type "CMake: Clean Rebuild")
+
+The firmware will be built in the build/gcc-arm/s2e/firmware folder
 
 ## Migration guide :  ARM-CLang to GCC
 

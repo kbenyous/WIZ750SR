@@ -31,6 +31,12 @@
 #include "httpUtil.h"
 #include "wizchip_conf.h"
 
+//KBEN: Breaking links to http server impl (in s2e projects)
+extern void make_json_devinfo(uint8_t * buf, uint16_t * len);
+extern uint8_t set_devinfo(uint8_t * uri);
+extern uint8_t set_devreset(uint8_t * uri);
+extern uint8_t set_devfacreset(uint8_t * uri);
+
 uint8_t http_get_cgi_handler(uint8_t * uri_name, uint8_t * buf, uint32_t * file_len)
 {
 	uint8_t ret = HTTP_OK;

@@ -21,7 +21,14 @@
 #include "httpServer.h"
 #include "httpParser.h"
 #include "httpUtil.h"
-#include "deviceHandler.h"
+
+//KBEN Remove link to s2e impl
+//#include "deviceHandler.h"
+#ifndef DEVICE_HTTP_PORT
+	#define DEVICE_HTTP_PORT 50003
+#endif
+extern void delay(__IO uint32_t nCount);
+
 
 #ifdef	_USE_SDCARD_
 #include "ff.h" 	// header file for FatFs library (FAT file system)

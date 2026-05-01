@@ -52,6 +52,8 @@ void I2C1_Handler(void);
 void PORT0_Handler(void);
 void PORT1_Handler(void);
 void PORT2_Handler(void);
+//KBEN Missing declaration of PORT3_Handler() in W7500x_it.h, added by KBEN 2016.10.31
+void PORT3_Handler(void);
 void DMA_Handler(void);
 void DUALTIMER0_Handler(void);
 void DUALTIMER1_Handler(void);
@@ -63,6 +65,8 @@ void PWM4_Handler(void);
 void PWM5_Handler(void);
 void PWM6_Handler(void);
 void PWM7_Handler(void);
+//KBEN Missing declaration of RTC_Handler() in W7500x_it.h, added by KBEN 2016.10.31
+void RTC_Handler(void);
 void ADC_Handler(void);
 void WZTOE_Handler(void);
 void EXTI_Handler(void);

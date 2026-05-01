@@ -3,6 +3,7 @@
 #include "common.h"
 #include "flashHandler.h"
 #include "W7500x_board.h"
+#include "uartHandler.h"
 
 #ifdef _FLASH_DEBUG_
 	#include <stdio.h>

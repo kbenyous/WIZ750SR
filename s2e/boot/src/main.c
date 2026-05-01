@@ -66,7 +66,7 @@
 
 
 #include "segcp.h"
-#include "configData.h"
+#include "ConfigData.h"
 
 
 /* Private typedef -----------------------------------------------------------*/

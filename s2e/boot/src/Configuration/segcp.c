@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include "common.h"
 #include "W7500x_board.h"
@@ -15,6 +16,8 @@
 #include "util.h"
 #include "uartHandler.h"
 
+// defined in main
+extern void delay(__IO uint32_t milliseconds);
 
 /* Private define ------------------------------------------------------------*/
 

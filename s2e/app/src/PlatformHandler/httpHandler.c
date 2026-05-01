@@ -11,6 +11,7 @@
 #include "uartHandler.h"
 #include "httpHandler.h"
 #include "httpParser.h"
+#include "flashHandler.h"
 
 void make_json_devinfo(uint8_t * buf, uint16_t * len)
 {

@@ -1,9 +1,7 @@
 #ifndef _MB_H_
 #define _MB_H_
 
-#define MODBUS_NONE        0
-#define MODBUS_RTU         1
-#define MODBUS_ASCII       2
+#include "types/modbus_types.h"
 
 void mbTCPtoRTU(uint8_t sock);
 void mbRTUtoTCP(uint8_t sock);

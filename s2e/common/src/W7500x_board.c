@@ -5,8 +5,8 @@
 #include "common.h"
 #include "W7500x_board.h"
 
-#include "timerHandler.h"
-#include "uartHandler.h"
+// #include "timerHandler.h"
+// #include "uartHandler.h"
 
 #ifdef __USE_EXT_EEPROM__
 	#include "eepromHandler.h"
@@ -15,6 +15,7 @@
 #include <stdio.h>
 
 extern void delay(__IO uint32_t nCount);
+extern void set_phylink_time_check(uint8_t enable);
 
 static void PHY_Init(void);
 //static void delay_ms(uint32_t ms);

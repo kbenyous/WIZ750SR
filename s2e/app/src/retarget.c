@@ -77,6 +77,7 @@ void _sys_exit(int return_code) {
 /* Retarget functions for GNU Tools for ARM Embedded Processors               */
 /******************************************************************************/
 #include <sys/stat.h>
+#include <unistd.h>
 
 __attribute__ ((used))  int _write (int fd, char *ptr, int len)
 {
@@ -86,6 +87,16 @@ __attribute__ ((used))  int _write (int fd, char *ptr, int len)
     }
   return len;
 }
+
+/* TODO: this assumes printf/fprintf are exclusively routed to the debug UART
+ * (UART2). Reporting stdout/stderr as TTYs forces newlib into line-buffered
+ * mode (flush on '\n') instead of full-buffered (~1 KiB buffer). Revisit if
+ * stdout/stderr are ever redirected elsewhere. */
+__attribute__ ((used)) int _isatty (int fd)
+{
+  return (fd == STDOUT_FILENO) || (fd == STDERR_FILENO);
+}
+/* end TODO */
 #else //using TOOLCHAIN_IAR
 
 int putchar(int ch)

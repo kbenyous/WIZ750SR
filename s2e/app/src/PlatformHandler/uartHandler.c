@@ -4,7 +4,7 @@
 #include "common.h"
 #include "W7500x_board.h"
 #include "W7500x_wdt.h"
-#include "configdata.h"
+#include "ConfigData.h"
 #include "uartHandler.h"
 #include "seg.h"
 

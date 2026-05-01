@@ -57,13 +57,15 @@
 
 #include "seg.h"
 #include "segcp.h"
-#include "configData.h"
+#include "ConfigData.h"
 
 #include "timerHandler.h"
 #include "uartHandler.h"
 #include "deviceHandler.h"
 #include "flashHandler.h"
 #include "gpioHandler.h"
+
+#include "httpServer.h"
 
 #include "index.h"
 #include "mb.h"

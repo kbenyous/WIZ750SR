@@ -9,8 +9,9 @@
 
 /* Application Port */
 #define DEVICE_SEGCP_PORT			50001	// Search Port (UDP Broadcast / TCP unicast)
-#define DEVICE_FWUP_PORT			50002	// Firmware Update Port
+//#define DEVICE_FWUP_PORT			50002	// Firmware Update Port
 #define DEVICE_DDNS_PORT			3030	// Not used
+#include "types/device_types.h"
 
 /* REMOTE Firmware update */
 // HTTP Request: DEVICE_FWUP_DOMAIN + DEVICE_FWUP_BINPATH

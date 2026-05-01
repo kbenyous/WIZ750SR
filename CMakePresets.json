@@ -1,0 +1,52 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "gcc-arm",
+            "displayName": "GCC 15.2 arm-none-eabi",
+            "description": "Using toolchain ARM 15.2",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/install/${presetName}",
+                "CMAKE_BUILD_TYPE": "Release",
+                "ARM_TOOLCHAIN_DIR": "/opt/arm/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi/"                
+            }
+        },
+        {
+            "name": "gcc-arm-debug",
+            "displayName": "GCC 15.2 arm-none-eabi, verbose build debug",
+            "description": "Using toolchain ARM 15.2, DEBUG build logs and MAIN_DEBUG in code",       
+            "cacheVariables": {
+               "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "inherits": [ "gcc-arm" ],
+            "debug": {
+                "output": true
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "gcc-arm",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "gcc-arm"
+        },
+        {
+            "name": "gcc-arm-debug",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "gcc-arm-debug"
+        }
+        
+    ],
+    "packagePresets": [
+        {
+            "name": "package-preset",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "gcc-arm"
+        }
+    ]
+}
