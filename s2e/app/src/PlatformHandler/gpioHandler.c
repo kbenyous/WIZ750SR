@@ -431,7 +431,7 @@ void set_connection_status_io(uint16_t pin, uint8_t set)
 uint8_t get_connection_status_io(uint16_t pin)
 {
 	struct __serial_info *serial = (struct __serial_info *)&(get_DevConfig_pointer()->serial_info);
-	uint8_t status;
+	uint8_t status = 0;
 	
 	if(pin == STATUS_PHYLINK_PIN)
 	{

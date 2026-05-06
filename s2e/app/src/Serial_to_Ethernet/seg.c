@@ -203,7 +203,7 @@ void do_seg(uint8_t sock)
 void set_device_status(teDEVSTATUS status)
 {
 	struct __network_info *net = (struct __network_info *)get_DevConfig_pointer()->network_info;
-	struct __serial_info *serial = (struct __serial_info *)&(get_DevConfig_pointer()->serial_info);
+	//struct __serial_info *serial = (struct __serial_info *)&(get_DevConfig_pointer()->serial_info);
 	
 	switch(status)
 	{
@@ -245,7 +245,6 @@ uint8_t get_device_status(void)
 
 void proc_SEG_udp(uint8_t sock)
 {
-	DevConfig *s2e = get_DevConfig_pointer();
 	struct __network_info *net = (struct __network_info *)get_DevConfig_pointer()->network_info;
 	struct __serial_info *serial = (struct __serial_info *)get_DevConfig_pointer()->serial_info;
 	
@@ -326,10 +325,9 @@ void proc_SEG_udp(uint8_t sock)
 
 void proc_SEG_tcp_client(uint8_t sock)
 {
-	DevConfig *s2e = get_DevConfig_pointer();
 	struct __network_info *net = (struct __network_info *)get_DevConfig_pointer()->network_info;
 	struct __serial_info *serial = (struct __serial_info *)get_DevConfig_pointer()->serial_info;
-	struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
+	//struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
 	
 	uint16_t source_port;
 	uint8_t destip[4] = {0, };
@@ -488,7 +486,6 @@ void proc_SEG_tcp_client(uint8_t sock)
 
 void proc_SEG_tcp_server(uint8_t sock)
 {
-	DevConfig *s2e = get_DevConfig_pointer();
 	struct __network_info *net = (struct __network_info *)get_DevConfig_pointer()->network_info;
 	struct __serial_info *serial = (struct __serial_info *)get_DevConfig_pointer()->serial_info;
 	struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
@@ -664,7 +661,6 @@ void proc_SEG_tcp_server(uint8_t sock)
 
 void proc_SEG_tcp_mixed(uint8_t sock)
 {
-	DevConfig *s2e = get_DevConfig_pointer();
 	struct __network_info *net = (struct __network_info *)get_DevConfig_pointer()->network_info;
 	struct __serial_info *serial = (struct __serial_info *)get_DevConfig_pointer()->serial_info;
 	struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
@@ -917,8 +913,8 @@ void uart_to_ether(uint8_t sock)
 	struct __network_info *netinfo = (struct __network_info *)&(get_DevConfig_pointer()->network_info);
 	struct __serial_info *serial = (struct __serial_info *)get_DevConfig_pointer()->serial_info;
 	uint16_t len;
-	int16_t sent_len;
-	uint16_t i; // ## for debugging
+	int16_t sent_len = 0;
+	//uint16_t i; // ## for debugging
 	
 #if ((DEVICE_BOARD_NAME == WIZ750SR) || (DEVICE_BOARD_NAME == WIZ750SR_1xx) || (DEVICE_BOARD_NAME == WIZ750SR_T1L))
 	if(get_phylink_in_pin() != 0) return; // PHY link down
@@ -1333,7 +1329,7 @@ void init_trigger_modeswitch(uint8_t mode)
 
 uint8_t check_modeswitch_trigger(uint8_t ch)
 {
-	struct __network_info *netinfo = (struct __network_info *)&(get_DevConfig_pointer()->network_info);
+	//struct __network_info *netinfo = (struct __network_info *)&(get_DevConfig_pointer()->network_info);
 	struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
 	
 	uint8_t modeswitch_failed = SEG_DISABLE;
@@ -1474,7 +1470,7 @@ void reset_SEG_timeflags(void)
 void init_time_delimiter_timer(void)
 {
 	struct __network_info *netinfo = (struct __network_info *)&(get_DevConfig_pointer()->network_info);
-	struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
+	//struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
 	
 	if(opmode == DEVICE_GW_MODE)
 	{

@@ -640,7 +640,7 @@ uint16_t get_firmware_from_server(uint8_t sock, uint8_t * server_ip, uint8_t * b
 
 int8_t process_dns_fw_server(uint8_t * fw_remote_ip, uint8_t * buf)
 {
-	struct __firmware_update_extend *fwupdate_server = (struct __firmware_update_extend *)&(get_DevConfig_pointer()->firmware_update_extend);
+	//struct __firmware_update_extend *fwupdate_server = (struct __firmware_update_extend *)&(get_DevConfig_pointer()->firmware_update_extend);
 	struct __options *option = (struct __options *)&(get_DevConfig_pointer()->options);
 	
 	int8_t ret = 0;

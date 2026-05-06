@@ -205,7 +205,6 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
 {
 	DevConfig *dev_config = get_DevConfig_pointer();
 	
-	uint8_t  i = 0;
 	uint16_t ret = 0;
 	uint8_t  cmdnum = 0;
 	uint8_t* treq;
@@ -218,8 +217,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
 	uint32_t tmp_long = 0;
 	
 	uint8_t tmp_ip[4];
-	uint8_t tmp_ip_cnt = 0;
-
+	
 	uint8_t param[SEGCP_PARAM_MAX*2];
 	
 #ifdef _SEGCP_DEBUG_   
@@ -889,7 +887,6 @@ uint16_t proc_SEGCP_udp(uint8_t* segcp_req, uint8_t* segcp_rep)
 	
 	uint16_t ret = 0;   
 	uint16_t len = 0;
-	uint16_t i = 0;
 	
 	uint8_t destip[4];
 	uint16_t destport;

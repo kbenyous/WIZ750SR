@@ -395,16 +395,10 @@ uint8_t UartPutc(UART_TypeDef* UARTx, uint8_t ch)
 
 void UartPuts(UART_TypeDef* UARTx, uint8_t *str)
 {
-    uint8_t ch;
-
-    do{
-        ch = *str;
-        if(ch != (uint8_t)0x0)
-        {
-            UartPutc(UARTx, ch);
-        }
-        *str++;
-    }while(ch != 0);
+    while(*str)
+    {
+        UartPutc(UARTx, *str++);
+    }
 }
 
 uint8_t UartGetc(UART_TypeDef* UARTx)
@@ -424,16 +418,10 @@ uint8_t S_UartPutc(uint8_t ch)
 
 void S_UartPuts(uint8_t *str)
 {
-    uint8_t ch;
-
-    do{
-        ch = *str;
-        if(ch != (uint8_t)0x0)
-        {
-            S_UART_SendData(ch);
-        }
-        *str++;
-    }while(ch != 0);
+    while(*str)
+    {
+        S_UART_SendData(*str++);
+    }
 }
 
 uint8_t S_UartGetc()

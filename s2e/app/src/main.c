@@ -139,8 +139,7 @@ int main(void)
     DevConfig *dev_config = get_DevConfig_pointer();
     wiz_NetInfo gWIZNETINFO;
 		int rst_info = 0;
-		uint32_t cnt = 0;
-		uint32_t stat_;
+		
 	  int i;
 	
     ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -201,7 +201,6 @@ uint8_t set_devreset(uint8_t * uri)
 uint8_t set_devfacreset(uint8_t * uri)
 {
 	uint8_t ret = 0;
-	uint8_t * param;
 
   flash_update_start();
   device_set_factory_default();

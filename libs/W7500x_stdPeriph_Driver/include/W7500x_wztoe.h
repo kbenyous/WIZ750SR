@@ -230,15 +230,9 @@ void WIZCHIP_WRITE_BUF(uint32_t BaseAddr, uint32_t ptr, uint8_t* pBuf, uint16_t 
 //-----------------------------------------
 // wztoe utils 
 //-----------------------------------------
-//#define htole32(x) \
-//	(((((uint32_t)x) & 0xff000000) >> 24) | \
-//	 ((((uint32_t)x) & 0x00ff0000) >> 8) | \
-//	 ((((uint32_t)x) & 0x0000ff00) << 8) | \
-//	 ((((uint32_t)x) & 0x000000ff) << 24))
-//
-//#define htole16(x) \
-//	(((((uint16_t)x) & 0xff00) >> 8) | \
-//	 ((((uint16_t)x) & 0x00ff) << 8)) 
+//#define htole32(x)    (((((uint32_t)x) & 0xff000000) >> 24) | ((((uint32_t)x) & 0x00ff0000) >> 8) | ((((uint32_t)x) & 0x0000ff00) << 8) | ((((uint32_t)x) & 0x000000ff) << 24))
+//#define htole16(x)    (((((uint16_t)x) & 0xff00) >> 8) | ((((uint16_t)x) & 0x00ff) << 8)) 
+
 /////////////////////////////////
 // Common Register I/O function //
 /////////////////////////////////
@@ -274,8 +268,7 @@ void WIZCHIP_WRITE_BUF(uint32_t BaseAddr, uint32_t ptr, uint8_t* pBuf, uint16_t 
  * @param (uint8_t)ir Value to set @ref IR register.
  * @sa getIR()
  */
-//#define setIR(ir) \
-//		WIZCHIP_WRITE(WZTOE_IR, (ir & 0xF0))
+//#define setIR(ir)     WIZCHIP_WRITE(WZTOE_IR, (ir & 0xF0))
 
 /**
  * @ingroup Common_register_access_function
@@ -321,8 +314,7 @@ void WIZCHIP_WRITE_BUF(uint32_t BaseAddr, uint32_t ptr, uint8_t* pBuf, uint16_t 
  * @return uint8_t. Value of @ref ICR register.
  * @sa setICR()
  */
-//#define getICR() \
-//		WIZCHIP_READ(WZTOE_ICR)
+//#define getICR()  WIZCHIP_READ(WZTOE_ICR)
 
 /**
  * @ingroup Common_register_access_function
@@ -748,8 +740,7 @@ uipr[3] = WIZCHIP_READ((WZTOE_UIPR));
  * @param (uint8_t)ir Value to set @ref Sn_IR
  * @sa getSn_IR()
  */
-//#define setSn_IR(sn, ir) \
-//		WIZCHIP_WRITE(WZTOE_Sn_IR(sn), (ir & 0x1F))
+//#define setSn_IR(sn, ir) WIZCHIP_WRITE(WZTOE_Sn_IR(sn), (ir & 0x1F))
 
 /**
  * @ingroup Socket_register_access_function
@@ -990,7 +981,6 @@ uipr[3] = WIZCHIP_READ((WZTOE_UIPR));
     WIZCHIP_WRITE((WZTOE_Sn_DIPR1(sn)), dipr[2]); \
     WIZCHIP_WRITE((WZTOE_Sn_DIPR(sn)),   dipr[3]); \
 }
-//#define setSn_DIPR(sn, dipr) \
 
 /**
  * @ingroup Socket_register_access_function

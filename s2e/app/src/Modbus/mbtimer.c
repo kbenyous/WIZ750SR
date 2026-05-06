@@ -24,7 +24,7 @@ static uint32_t us_to_timer_load(uint32_t usec)
 
 void xMBPortTimersInit(uint32_t usTim1Timerout50us) {
     /* Calculate mb_timeout in ��s: T3.5 + 50ms response timeout */
-    uint32_t mb_timeout;
+
     uint32_t t35_time_us = usTim1Timerout50us * 50;
 		uint32_t sum = 0;
     DUALTIMER_InitTypDef Dualtimer_InitStructure;

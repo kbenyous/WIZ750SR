@@ -11,12 +11,13 @@ add_compile_options(
     #-mabi=aapcs
     -fdata-sections     
     -fdiagnostics-color=always
-#    -Wall
+    -Wall
+    -Wno-pointer-sign  # safe: char ≡ uint8_t with -funsigned-char on ARM AAPCS
 #    -O2
     -Og
     -g3
     -fmessage-length=0
-    -fsigned-char
+    -funsigned-char
     -ffunction-sections 
     --specs=nano.specs    
     -DUSE_STDPERIPH_DRIVER

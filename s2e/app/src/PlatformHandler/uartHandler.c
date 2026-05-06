@@ -328,7 +328,6 @@ void check_uart_flow_control(uint8_t flow_ctrl)
 
 int32_t uart_putc(uint8_t uartNum, uint8_t ch)
 {
-	DevConfig *value = get_DevConfig_pointer();
 	
 	//1.4.1
 	// When the baudrate is low and long data is sent, the WDT is triggered.
@@ -370,7 +369,7 @@ int32_t uart_puts(uint8_t uartNum, uint8_t* buf, uint16_t reqSize)
 
 int32_t uart_getc(uint8_t uartNum)
 {
-	int32_t ch;
+	int32_t ch = RET_NOK;
 
 	if(uartNum == SEG_DATA_UART)
 	{
@@ -385,15 +384,13 @@ int32_t uart_getc(uint8_t uartNum)
 	{
 		;//ch = (uint8_t)S_UartGetc();
 	}
-	else
-		return RET_NOK;
 
 	return ch;
 }
 
 int32_t uart_getc_nonblk(uint8_t uartNum)
 {
-	int32_t ch;
+	int32_t ch = RET_NOK;
 
 	if(uartNum == SEG_DATA_UART)
 	{
@@ -405,8 +402,6 @@ int32_t uart_getc_nonblk(uint8_t uartNum)
 	{
 		;
 	}
-	else
-		return RET_NOK;
 
 	return ch;
 }
@@ -580,7 +575,7 @@ void uart_rs485_disable(uint8_t uartNum)
 	
 uint8_t get_uart_cts_pin(uint8_t uartNum)
 {
-	uint8_t cts_pin;
+	uint8_t cts_pin = 0;
 
 #ifdef _UART_DEBUG_
 	static uint8_t prev_cts_pin;
@@ -639,15 +634,13 @@ void set_uart_rts_pin_low(uint8_t uartNum)
   * @retval None
   */
 void check_n_clear_uart_recv_status(uint8_t channel)
-{
-	uint16_t dummy;
-	
+{	
 	UART_TypeDef* UARTx = (channel==0)?UART0:UART1;
 	
 	if(UARTx->STATUS.RSR != RESET)
 	{
 		if(UART_GetRecvStatus(UARTx, UART_RECV_STATUS_OE))
-			dummy = UART_ReceiveData(UARTx);
+			UART_ReceiveData(UARTx);
 		
 		UARTx->STATUS.ECR = ~UARTx->STATUS.RSR;
 	}
