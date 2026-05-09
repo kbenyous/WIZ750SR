@@ -28,7 +28,6 @@ set(HEADER_FILES
     ${INCLUDE_DIR}/Modbus/mb.h
     ${INCLUDE_DIR}/Callback/dhcp_cb.h
     ${INCLUDE_DIR}/W7500x_board.h
-    ${INCLUDE_DIR}/common.h
     ${INCLUDE_DIR}/Configuration/util.h
     ${INCLUDE_DIR}/Configuration/segcp.h
 
@@ -95,5 +94,8 @@ target_link_options(W750SR_S2E_App PRIVATE
 )
 set_target_properties(W750SR_S2E_App PROPERTIES SUFFIX ".elf")
 
-# Boot hex : to be combined with App hex, and then converted to full firmware bin
+# Hex file : for combinasion with Boot, and generate complete BIN file
 create_hex_file(W750SR_S2E_App)
+
+# Bin file : for direct use with OTA update
+create_binary_file(W750SR_S2E_App)

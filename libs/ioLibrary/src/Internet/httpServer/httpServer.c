@@ -38,6 +38,12 @@ extern void delay(__IO uint32_t nCount);
 	#define DATA_BUF_SIZE		2048
 #endif
 
+/* HTTP receive/transmit buffer size: must match the actual buffers passed to httpServer_init().
+ * Kept separate from DATA_BUF_SIZE which is used for S2E data transfer. */
+#ifndef HTTP_DATA_BUF_SIZE
+	#define HTTP_DATA_BUF_SIZE	1024
+#endif
+
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
@@ -169,7 +175,7 @@ void httpServer_run(uint8_t seqnum)
 				case STATE_HTTP_IDLE :
 					if ((len = getSn_RX_RSR(s)) > 0)
 					{
-						if (len > DATA_BUF_SIZE) len = DATA_BUF_SIZE;
+						if (len > HTTP_DATA_BUF_SIZE) len = HTTP_DATA_BUF_SIZE;
 						len = recv(s, (uint8_t *)http_request, len);
 
 						*(((uint8_t *)http_request) + len) = '\0';
@@ -359,11 +365,11 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 	// Send the HTTP Response 'body'; requested file
 	if(!HTTPSock_Status[get_seqnum].file_len) // ### Send HTTP response body: First part ###
 	{
-		if (file_len > DATA_BUF_SIZE - 1)
+		if (file_len > HTTP_DATA_BUF_SIZE - 1)
 		{
 			HTTPSock_Status[get_seqnum].file_start = start_addr;
 			HTTPSock_Status[get_seqnum].file_len = file_len;
-			send_len = DATA_BUF_SIZE - 1;
+			send_len = HTTP_DATA_BUF_SIZE - 1;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ## 20141219 Eric added, for 'File object structure' (fs) allocation reduced (8 -> 1)
@@ -401,9 +407,9 @@ static void send_http_response_body(uint8_t s, uint8_t * uri_name, uint8_t * buf
 #endif
 		send_len = HTTPSock_Status[get_seqnum].file_len - HTTPSock_Status[get_seqnum].file_offset;
 
-		if(send_len > DATA_BUF_SIZE - 1)
+		if(send_len > HTTP_DATA_BUF_SIZE - 1)
 		{
-			send_len = DATA_BUF_SIZE - 1;
+			send_len = HTTP_DATA_BUF_SIZE - 1;
 			//HTTPSock_Status[get_seqnum]->file_offset += send_len;
 		}
 		else
@@ -564,7 +570,7 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 			if(p_http_request->TYPE == PTYPE_CGI)
 			{
 				content_found = http_get_cgi_handler(uri_name, pHTTP_TX, &file_len);
-				if(content_found && (file_len <= (DATA_BUF_SIZE-(strlen(RES_CGIHEAD_OK)+8))))
+				if(content_found && (file_len <= (HTTP_DATA_BUF_SIZE-(strlen(RES_CGIHEAD_OK)+8))))
 				{
 					send_http_response_cgi(s, http_response, pHTTP_TX, (uint16_t)file_len);
 				}
@@ -661,7 +667,7 @@ static void http_process_handler(uint8_t s, st_http_request * p_http_request)
 #ifdef _HTTPSERVER_DEBUG_
 				printf("> HTTPSocket[%d] : [CGI: %s] / Response len [ %ld ]byte\r\n", s, content_found?"Content found":"Content not found", file_len);
 #endif
-				if(content_found && (file_len <= (DATA_BUF_SIZE-(strlen(RES_CGIHEAD_OK)+8))))
+				if(content_found && (file_len <= (HTTP_DATA_BUF_SIZE-(strlen(RES_CGIHEAD_OK)+8))))
 				{
 					send_http_response_cgi(s, pHTTP_TX, http_response, (uint16_t)file_len);
 

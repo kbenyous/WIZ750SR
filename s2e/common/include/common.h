@@ -65,7 +65,7 @@
 //////////////////////////////////
 /* Buffer size */
 #define DATA_BUF_SIZE           2048
-#define CONFIG_BUF_SIZE         512
+#define CONFIG_BUF_SIZE         1024
 
 //////////////////////////////////
 // Available board list         //

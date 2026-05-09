@@ -75,7 +75,7 @@ void make_json_devinfo(uint8_t * buf, uint16_t * len)
 
 uint8_t set_devinfo(uint8_t * uri)
 {
-	uint8_t buf[8];
+	uint8_t buf[32];
 	uint8_t ret = 0;
 	uint8_t * param;
 	uint8_t str_size;
@@ -125,6 +125,7 @@ uint8_t set_devinfo(uint8_t * uri)
 	if((param = get_http_param_value((char *)uri, "opmode", (char*)buf)))
 	{
 	  dev_config->network_info[0].working_mode = ATOI(param, 10);
+	  ret = 1;
 	}
 
   if((param = get_http_param_value((char *)uri, "lport", (char*)buf)))
