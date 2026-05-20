@@ -63,11 +63,14 @@ uint8_t http_post_cgi_handler(uint8_t * uri_name, st_http_request * p_http_reque
 
 	if(predefined_set_cgi_processor(uri_name, p_http_request->URI, buf, &len))
 	{
-    ret = HTTP_RESET;
+		/* CGI URI matched. The handler writes "1" in buf when the change
+		 * was actually applied (reboot required) and "0" otherwise — only
+		 * reboot in the first case, to avoid the misleading "200 OK + reboot
+		 * without any change saved" behavior. */
+		ret = (len >= 1 && buf[0] == '1') ? HTTP_RESET : HTTP_OK;
 	}
 	else
 	{
-		// CGI file not found
 		ret = HTTP_FAILED;
 	}
 
