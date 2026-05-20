@@ -180,6 +180,35 @@ void httpServer_run(uint8_t seqnum)
 
 						*(((uint8_t *)http_request) + len) = '\0';
 
+						/* POST: browsers commonly send headers and body in
+						 * separate TCP segments. Wait until Content-Length
+						 * octets after "\r\n\r\n" have actually been buffered
+						 * before parsing — otherwise CGI handlers see an
+						 * empty body and silently fail. */
+						if (strncmp((char *)http_request, "POST", 4) == 0)
+						{
+							char *cl_str = strstr((char *)http_request, "Content-Length:");
+							char *body   = strstr((char *)http_request, "\r\n\r\n");
+							if (cl_str && body)
+							{
+								uint16_t content_length = (uint16_t)atoi(cl_str + 15);
+								uint16_t header_len     = (uint16_t)(body + 4 - (char *)http_request);
+								uint32_t t0             = get_httpServer_timecount();
+
+								while ((len - header_len) < content_length
+								       && len < HTTP_DATA_BUF_SIZE
+								       && (get_httpServer_timecount() - t0) <= 3)
+								{
+									uint16_t avail = getSn_RX_RSR(s);
+									if (avail == 0) continue;
+									uint16_t room  = HTTP_DATA_BUF_SIZE - len;
+									uint16_t to_read = (avail < room) ? avail : room;
+									len += recv(s, (uint8_t *)http_request + len, to_read);
+									*(((uint8_t *)http_request) + len) = '\0';
+								}
+							}
+						}
+
 						parse_http_request(parsed_http_request, (uint8_t *)http_request);
 #ifdef _HTTPSERVER_DEBUG_
 						getSn_DIPR(s, destip);
