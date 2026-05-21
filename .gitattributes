@@ -1,0 +1,105 @@
+# Equivalent to core.autocrlf=input:
+#   - Text files are normalized to LF in the repository.
+#   - No CRLF conversion is performed on checkout (any OS).
+# Auto-detection is the safety net; explicit rules below take precedence.
+* text=auto eol=lf
+
+# ---------------------------------------------------------------------------
+# Source code (C / C++ / Assembly)
+# ---------------------------------------------------------------------------
+*.c       text eol=lf diff=cpp
+*.h       text eol=lf diff=cpp
+*.cpp     text eol=lf diff=cpp
+*.hpp     text eol=lf diff=cpp
+*.cc      text eol=lf diff=cpp
+*.hh      text eol=lf diff=cpp
+*.S       text eol=lf
+*.s       text eol=lf
+*.inc     text eol=lf
+
+# ---------------------------------------------------------------------------
+# Build system (CMake / GCC linker scripts)
+# ---------------------------------------------------------------------------
+*.cmake           text eol=lf
+CMakeLists.txt    text eol=lf
+CMakePresets.json text eol=lf
+*.ld              text eol=lf
+*.lds             text eol=lf
+Makefile          text eol=lf
+Makefile.*        text eol=lf
+*.mk              text eol=lf
+
+# ---------------------------------------------------------------------------
+# Scripts
+# ---------------------------------------------------------------------------
+*.sh   text eol=lf
+*.py   text eol=lf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+# ---------------------------------------------------------------------------
+# Config / data / documentation (text)
+# ---------------------------------------------------------------------------
+*.json     text eol=lf
+*.xml      text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.toml     text eol=lf
+*.ini      text eol=lf
+*.cfg      text eol=lf
+*.conf     text eol=lf
+*.md       text eol=lf diff=markdown
+*.txt      text eol=lf
+*.html     text eol=lf diff=html
+*.htm      text eol=lf diff=html
+*.css      text eol=lf
+*.js       text eol=lf
+.gitignore     text eol=lf
+.gitattributes text eol=lf
+LICENSE        text eol=lf
+README         text eol=lf
+AUTHORS        text eol=lf
+CHANGELOG      text eol=lf
+
+# ---------------------------------------------------------------------------
+# Binary artefacts (no diff, no line-ending munging)
+# ---------------------------------------------------------------------------
+# Firmware / object files
+*.bin   binary
+*.hex   binary
+*.elf   binary
+*.axf   binary
+*.o     binary
+*.obj   binary
+*.a     binary
+*.lib   binary
+*.so    binary
+*.dll   binary
+*.exe   binary
+*.map   binary
+*.d     binary
+
+# Images
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.bmp   binary
+*.svg   text eol=lf
+
+# Documents / archives
+*.pdf   binary
+*.zip   binary
+*.tar   binary
+*.gz    binary
+*.7z    binary
+
+# Keil / ARM toolchain (binary or generated)
+*.uvprojx  binary
+*.uvoptx   binary
+*.uvgui    binary
+*.scat     text eol=lf
+*.sct      text eol=lf
+*.pack     binary
