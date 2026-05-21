@@ -165,11 +165,82 @@ All commands terminate with `\r`, all replies start with a numeric code
 | `Permission denied: /dev/ttyUSB0` | See *Serial port access* section. |
 | Module does not boot into application after flashing | BOOT still HIGH. Set it LOW and reset. |
 
-Do not forget reset MAC at first boot if you erase all the memory (`--erase mass` option). 
+After `--erase mass`, the data flash sector storing the MAC is wiped. On the next boot, use [`wiz750sr_setmac.py`](#wiz750sr_setmacpy) to write a new MAC; otherwise the Boot will block at the `INPUT FIRST MAC?` prompt.
+
+---
+
+## `wiz750sr_setmac.py`
+
+Writes the MAC address of a freshly-flashed (or mass-erased) module.
+
+### When you need it
+
+`wiz750sr_flash.py --erase mass` wipes the data flash sector at
+`0x0003FE00` (DAT0) that stores the MAC. On the next boot, the Boot
+partition detects the missing MAC, prints `INPUT FIRST MAC?` on the
+UART, and blocks waiting for a SEGCP `MC` command before continuing.
+
+This script automates that exchange.
+
+### Hardware setup
+
+1. **BOOT pin LOW** (so the chip boots into Boot+App, *not* the ROM
+   ISP) — opposite of what's required for `wiz750sr_flash.py`.
+2. UART connected to the host (same wiring as for flashing).
+3. Reset the module **after** the script starts — the boot prompt is
+   printed once at startup and the script needs to be listening.
+
+### Usage
+
+```bash
+python3 scripts/wiz750sr_setmac.py <MAC> -p <port> [options]
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `mac` | *(required)* | Target MAC address, e.g. `AA:BB:CC:DD:EE:FF`. Separators `:`, `-`, `.` accepted. |
+| `-p`, `--port` | *(required)* | Serial port. |
+| `-b`, `--baud` | `115200` | Boot's default UART baudrate. |
+| `--no-wait` | — | Skip waiting for `INPUT FIRST MAC?` and send the command immediately. Use only if the prompt is already on screen. |
+
+Example:
+
+```bash
+python3 scripts/wiz750sr_setmac.py 00:08:DC:12:34:56 -p /dev/ttyUSB0
+```
+
+Typical output:
+
+```
+[*] Port      : /dev/ttyUSB0 @ 115200 8N1
+[*] MAC       : 00:08:DC:12:34:56
+[*] Reminder  : BOOT pin must be LOW; reset the module AFTER this script starts.
+[*] Waiting for 'INPUT FIRST MAC?' (reset the module now) ...
+[+] Boot is waiting for MAC.
+    | INPUT FIRST MAC?
+[*] Sending   : b'MC00:08:DC:12:34:56\r\n'
+[*] Reading boot output for verification ...
+    | >> Firmware version: Boot 1.5.0 Develop
+    | >> Network configuration: ...
+[+] MAC 00:08:DC:12:34:56 written. Factory config restored.
+```
+
+### Notes and limits
+
+- **One-shot write**: once a MAC is in DAT0, the App's `MC` SEGCP setter
+  refuses to overwrite it if it starts with `00:08:DC` (WIZnet OUI
+  factory protection, [boot/segcp.c:462](../s2e/boot/src/Configuration/segcp.c#L462)).
+  To re-assign a MAC you must mass-erase and reflash first.
+- The Boot first-boot prompt does **not** apply that protection, so any
+  valid MAC (including a fresh `00:08:DC:xx:xx:xx` or a locally-
+  administered MAC with the LAA bit set) is accepted here.
+- The command sent is exactly 21 bytes (`MC<17-char MAC>\r\n`), which
+  matches the Boot's blocking `S_UartGetc()` loop in
+  [s2e/boot/src/main.c:514](../s2e/boot/src/main.c#L514).
 
 ---
 
 ### License
 
-`wiz750sr_flash.py` is released under the **MIT** license (see SPDX
-header in the file), independently of the firmware license.
+Both scripts are released under the **MIT** license (see SPDX header
+in each file), independently of the firmware license.
