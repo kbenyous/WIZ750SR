@@ -80,3 +80,7 @@
 
 /build/*
 .vscode/*
+
+# Python bytecode (scripts/)
+*.pyc
+__pycache__/

@@ -18,12 +18,13 @@ set(HEADER_FILES
 set(SOURCES
     ${SRC_DIR}/ConfigData.c
     ${SRC_DIR}/W7500x_board.c
+    ${SRC_DIR}/fw_version.c
 )
 
 
-add_library(W750SR_S2E_Common OBJECT  ${HEADER_FILES} ${SOURCES})
-target_link_libraries(W750SR_S2E_Common ioLibrary W7500x_stdPeriph_Driver)
-target_include_directories(W750SR_S2E_Common PUBLIC
+add_library(WIZ750SR_S2E_Common OBJECT  ${HEADER_FILES} ${SOURCES})
+target_link_libraries(WIZ750SR_S2E_Common ioLibrary W7500x_stdPeriph_Driver)
+target_include_directories(WIZ750SR_S2E_Common PUBLIC
  ${INCLUDE_DIR}
   ${INCLUDE_DIR}/Configuration/
     ${INCLUDE_DIR}/PlatformHandler/

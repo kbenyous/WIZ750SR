@@ -229,6 +229,9 @@ SECTIONS
      */
     .text : ALIGN(4)
     {
+        /* Firmware version marker (see s2e/common/src/fw_version.c) */
+        KEEP(*(.fw_version))
+
         *(.text .text.*)			/* all remaining code */
 
  		/* read-only data (constants) */
