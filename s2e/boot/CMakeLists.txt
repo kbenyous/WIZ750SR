@@ -40,18 +40,18 @@ set(SOURCES
 )
 
 
-add_executable(W750SR_S2E_Boot ${SOURCES} ${HEADER_FILES})
+add_executable(WIZ750SR_S2E_Boot ${SOURCES} ${HEADER_FILES})
 
-target_include_directories(W750SR_S2E_Boot PRIVATE
+target_include_directories(WIZ750SR_S2E_Boot PRIVATE
 ${INCLUDE_DIR}
 ${INCLUDE_DIR}/PlatformHandler
 ${INCLUDE_DIR}/Callback
 ${INCLUDE_DIR}/Configuration
 )
 
-target_link_libraries(W750SR_S2E_Boot CMSIS W7500x_stdPeriph_Driver ioLibrary W750SR_S2E_Common diag newlib cortexm)
+target_link_libraries(WIZ750SR_S2E_Boot CMSIS W7500x_stdPeriph_Driver ioLibrary WIZ750SR_S2E_Common diag newlib cortexm)
 
-target_link_options(W750SR_S2E_Boot PRIVATE 
+target_link_options(WIZ750SR_S2E_Boot PRIVATE 
     --specs=nosys.specs
     --specs=nano.specs
     "SHELL:-T ${CMAKE_CURRENT_SOURCE_DIR}/linker/libs.ld"
@@ -61,7 +61,7 @@ target_link_options(W750SR_S2E_Boot PRIVATE
     -mthumb    
     -lc
     -lm
-    -Wl,--gc-sections,-Map=WIZ750SR_Boot.map,--cref
+    -Wl,--gc-sections,-Map=WIZ750SR_S2E_Boot.map,--cref
 
     -nostartfiles
 
@@ -69,7 +69,7 @@ target_link_options(W750SR_S2E_Boot PRIVATE
 
     #--verbose
 )
-set_target_properties(W750SR_S2E_Boot PROPERTIES SUFFIX ".elf")
+set_target_properties(WIZ750SR_S2E_Boot PROPERTIES SUFFIX ".elf")
 
 # Boot hex : to be combined with App hex, and then converted to full firmware bin
-create_hex_file(W750SR_S2E_Boot)
+create_hex_file(WIZ750SR_S2E_Boot)
