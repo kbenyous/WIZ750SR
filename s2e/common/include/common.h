@@ -8,11 +8,11 @@
 //////////////////////////////////
 /* Application Firmware Version */
 #define MAJOR_VER               1
-#define MINOR_VER               4
-#define MAINTENANCE_VER         5
+#define MINOR_VER               5
+#define MAINTENANCE_VER         0
 
 //#define STR_VERSION_STATUS      //"Final"//"Develop" // or "Stable"
-#define STR_VERSION_STATUS      "Stable"
+#define STR_VERSION_STATUS      "Develop"
 
 //////////////////////////////////
 // W7500x HW Socket Definition  //
