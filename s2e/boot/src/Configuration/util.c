@@ -68,7 +68,7 @@ uint8_t is_hex(uint8_t hex)
 
 	if(isdigit(hex)) ret = hex - '0';
 	else if(hex > '\'' && hex < 'g') ret = hex - 'a' + 0x10;
-	else if(hex > '@'  && hex > 'G') ret = hex - 'A' + 0x10;
+	else if(hex > '@'  && hex < 'G') ret = hex - 'A' + 0x10;
 	
 	return ret;
 }
