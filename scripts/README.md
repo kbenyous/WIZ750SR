@@ -240,7 +240,199 @@ Typical output:
 
 ---
 
+## `wiz750sr_discover.py`
+
+Discovers all WIZ750SR (and compatible WIZnet S2E) devices reachable on
+the LAN via a SEGCP UDP broadcast — the same mechanism the WIZnet
+config tool uses.
+
+### How it works
+
+Devices listen on UDP/50001 and respond to a broadcast query that
+starts with the SEGCP `MA` command targeting the broadcast MAC
+(`FF:FF:FF:FF:FF:FF`), which grants the sender read-only privilege.
+The reply echoes the device's real MAC plus whatever GET commands were
+appended to the query. The script asks for `MC` (MAC), `MN` (name),
+`VR` (firmware version), `LI` (configured IP) and `OP` (working mode).
+
+### Usage
+
+```bash
+python3 scripts/wiz750sr_discover.py [-B <bcast>] [-t <seconds>] [-p <port>]
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `-B`, `--broadcast` | `255.255.255.255` | Broadcast address. Use `192.168.x.255` to scope to a specific subnet (useful when the host has multiple interfaces). |
+| `-t`, `--timeout` | `2.0` | Seconds to listen for replies. |
+| `-p`, `--port` | `50001` | SEGCP UDP port. |
+| `-s`, `--script` | — | Machine-readable TSV on stdout (no header, no decorations); diagnostics go to stderr. Exit 0 if ≥ 1 device found, 1 otherwise. |
+
+Example output:
+
+```
+[*] Sending SEGCP discovery to 255.255.255.255:50001 (source port 50515, host: Linux)
+[*] Listening for replies for 2.0s ...
+[+] 2 device(s) found:
+
+Source IP        MAC                Name              Version  Configured IP    Mode
+---------------  -----------------  ----------------  -------  ---------------  -----------
+192.168.11.42    00:08:DC:12:34:56  WIZ750SR-bench    1.5.0    192.168.11.42    TCP server
+192.168.11.57    00:08:DC:AA:BB:CC  WIZ750SR-test     1.5.0    192.168.11.57    TCP mixed
+```
+
+### Script-friendly mode
+
+`-s` / `--script` emits one device per line, tab-separated, no header
+or decorations. Field order: `src_ip<TAB>mac<TAB>name<TAB>version<TAB>local_ip<TAB>mode`.
+
+Examples:
+
+```bash
+# Extract just the IPs:
+python3 scripts/wiz750sr_discover.py -s | cut -f1
+
+# Find the IP of a device by name:
+python3 scripts/wiz750sr_discover.py -s | awk -F'\t' '$3=="WIZ750SR-bench" {print $1}'
+
+# Loop over discovered devices:
+python3 scripts/wiz750sr_discover.py -s | while IFS=$'\t' read -r ip mac name ver lip mode; do
+    echo "$name @ $ip ($mac)"
+done
+
+# Suppress diagnostics entirely:
+python3 scripts/wiz750sr_discover.py -s 2>/dev/null
+```
+
+### WSL2 caveat
+
+WSL2's default NAT networking mode **does not forward UDP broadcasts to
+the LAN**, so no device will reply. The script auto-detects WSL and
+prints a warning. Workarounds:
+
+1. **Mirrored networking** (recommended) — WSL2 ≥ 2.0.0 + Windows 11 22H2+.
+   In `%USERPROFILE%\.wslconfig`:
+   ```ini
+   [wsl2]
+   networkingMode=mirrored
+   ```
+   Then `wsl --shutdown` from PowerShell.
+2. **Run from Windows directly** — install Python on Windows and run
+   the script there. Same code works.
+
+---
+
+## `wiz750sr_netflash.py`
+
+OTA-flash the **App** of a running WIZ750SR module over the network,
+without touching the Boot. Reads the current version, performs the
+flash, waits for the reboot, then reads the new version back.
+
+### How it works
+
+1. **BEFORE query** — TCP SEGCP to `<ip>:50001` with the broadcast MAC
+   (READ privilege) to record current `VR` / `MC` / `MN`.
+2. **FW SET** — second SEGCP TCP exchange targeting the device's real
+   MAC (WRITE privilege) with `FW<size>`. The device replies
+   `FW<ip>:50002\r\n`, closes the SEGCP socket, erases the App backup
+   sector and opens a TCP listener on port 50002.
+3. **Upload** — connects to `<ip>:50002` (with retries to ride out the
+   erase delay) and streams the firmware bytes.
+4. **Reboot wait** — polls the SEGCP port until the device replies
+   again, then re-reads `VR`.
+
+Only the App is flashed; the Boot remains untouched. The App backup
+swap is handled by the Boot on the next reboot.
+
+### Usage
+
+```bash
+python3 scripts/wiz750sr_netflash.py <app.bin> -i <ip> [options]
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `firmware` | *(required)* | App `.bin` to flash. Must be ≤ 100 KB (`DEVICE_FWUP_SIZE`). |
+| `-i`, `--ip` | *(required)* | Device IP address. Find it with `wiz750sr_discover.py`. |
+| `-m`, `--mac` | auto | Device MAC (needed for write privilege). Auto-discovered from the BEFORE query if omitted. |
+| `-P`, `--password` | empty | Device search password (only if configured). |
+| `--reboot-wait` | `20` | Seconds to wait for the device to come back online after the upload. |
+| `-s`, `--script` | — | Machine-readable TSV on stdout, diagnostics on stderr. Exit 0 on success. |
+
+Example (interactive):
+
+```bash
+$ python3 scripts/wiz750sr_netflash.py build/.../WIZ750SR_S2E_App.bin -i 192.168.11.42
+[*] Firmware  : build/.../WIZ750SR_S2E_App.bin (87324 bytes)
+[*] Target    : 192.168.11.42
+[*] Querying device for current version ...
+[*] Current   : version=1.5.0A mac=00:08:DC:12:34:56 name=WIZ750SR-bench
+[*] Sending FW87324 (initiate OTA) ...
+[*] Uploading to 192.168.11.42:50002 ...
+[+] Upload OK (87324 bytes in 0.4s)
+[*] Waiting up to 20s for reboot ...
+[*] After     : version=1.5.1A
+[+] OTA complete: 1.5.0A -> 1.5.1A
+```
+
+### Script-friendly mode
+
+`-s` / `--script` outputs **one TSV line** on stdout:
+
+```
+<mac>\t<ip>\t<before_version>\t<after_version>\t<status>
+```
+
+`<status>` is one of:
+
+| Status | Meaning |
+|---|---|
+| `OK` | Device rebooted and replied with a version |
+| `OK_NO_VERSION` | Device rebooted but didn't return `VR` |
+| `UNREACHABLE` | No reply to the initial BEFORE query |
+| `NO_REPLY` | TCP open succeeded but reply wasn't a valid SEGCP frame |
+| `FW_CMD_FAILED` | SEGCP TCP error while sending `FW<size>` |
+| `FW_CMD_REJECTED` | Device didn't return `FW<ip>:<port>` (wrong MAC / password / size too big) |
+| `UPLOAD_FAILED` | Could not connect to the OTA TCP port after retries |
+| `UNREACHABLE_AFTER` | Upload OK but device never came back online |
+
+Exit code: `0` if `<status> == OK*`, `1` otherwise, `2` for usage errors.
+
+Examples:
+
+```bash
+# Just check success
+wiz750sr_netflash.py app.bin -i 192.168.11.42 -s >/dev/null && echo "flashed"
+
+# Pull just the new version
+wiz750sr_netflash.py app.bin -i 192.168.11.42 -s | cut -f4
+
+# Mass-flash a list of IPs and report
+while read ip; do
+    wiz750sr_netflash.py app.bin -i "$ip" -s
+done < ips.txt | awk -F'\t' '{ printf "%-16s %-8s %s -> %s\n", $2, $5, $3, $4 }'
+
+# Only the failures
+wiz750sr_netflash.py app.bin -i 192.168.11.42 -s | grep -v $'\tOK\t' && echo "failure"
+```
+
+### Notes
+
+- **Boot stays untouched.** Use `wiz750sr_flash.py` (UART/ISP) if you
+  need to update the Boot too. For Boot+App updates over the network
+  on a module already running this firmware, the SEGCP `BU` command
+  would be the path — not implemented here.
+- The reboot-wait timeout includes the App-backup → App-main swap, so
+  20 s is generous for a healthy module. Increase it if your network
+  has a slow DHCP server (the device must complete IP acquisition
+  before answering SEGCP again).
+- Multi-device runs: target one IP at a time. The device closes the
+  SEGCP socket as soon as it accepts the `FW` command, so don't try
+  to hold a long-running connection for batching.
+
+---
+
 ### License
 
-Both scripts are released under the **MIT** license (see SPDX header
-in each file), independently of the firmware license.
+All scripts are released under the **MIT** license (see SPDX header in
+each file), independently of the firmware license.
