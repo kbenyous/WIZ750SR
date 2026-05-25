@@ -91,14 +91,14 @@ def warn_if_wsl() -> None:
 OP_MODES = {"0": "TCP client", "1": "TCP server", "2": "TCP mixed", "3": "UDP"}
 
 
-FIELD_ORDER = ("src_ip", "mac", "name", "version", "local_ip", "mode")
+FIELD_ORDER = ("mac", "src_ip", "name", "version", "local_ip", "mode")
 
 
 def row_for(src_ip: str, info: dict[str, str]) -> tuple[str, ...]:
     """Project a device record into the canonical FIELD_ORDER tuple."""
     return (
-        src_ip,
         info.get("mac", ""),
+        src_ip,
         info.get("MN", ""),
         info.get("VR", ""),
         info.get("LI", ""),
@@ -108,7 +108,7 @@ def row_for(src_ip: str, info: dict[str, str]) -> tuple[str, ...]:
 
 def format_table(seen: dict[str, tuple[str, dict[str, str]]]) -> str:
     """Render the result set as a fixed-width human-readable table."""
-    headers = ("Source IP", "MAC", "Name", "Version", "Configured IP", "Mode")
+    headers = ("MAC", "Source IP", "Name", "Version", "Configured IP", "Mode")
     rows = [row_for(src_ip, info) for _, (src_ip, info) in sorted(seen.items())]
     widths = [max(len(h), *(len(r[i]) for r in rows)) for i, h in enumerate(headers)]
     fmt = "  ".join(f"{{:<{w}}}" for w in widths)
@@ -151,7 +151,7 @@ def main() -> int:
         "-s", "--script", action="store_true",
         help="Machine-readable TSV output on stdout, no header, no decorations. "
              "Diagnostic messages still go to stderr. Field order: "
-             "src_ip<TAB>mac<TAB>name<TAB>version<TAB>local_ip<TAB>mode.",
+             "mac<TAB>src_ip<TAB>name<TAB>version<TAB>local_ip<TAB>mode.",
     )
     args = parser.parse_args()
 
