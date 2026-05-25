@@ -275,28 +275,31 @@ Example output:
 [*] Listening for replies for 2.0s ...
 [+] 2 device(s) found:
 
-Source IP        MAC                Name              Version  Configured IP    Mode
----------------  -----------------  ----------------  -------  ---------------  -----------
-192.168.11.42    00:08:DC:12:34:56  WIZ750SR-bench    1.5.0    192.168.11.42    TCP server
-192.168.11.57    00:08:DC:AA:BB:CC  WIZ750SR-test     1.5.0    192.168.11.57    TCP mixed
+MAC                Source IP        Name              Version  Configured IP    Mode
+-----------------  ---------------  ----------------  -------  ---------------  -----------
+00:08:DC:12:34:56  192.168.11.42    WIZ750SR-bench    1.5.0    192.168.11.42    TCP server
+00:08:DC:AA:BB:CC  192.168.11.57    WIZ750SR-test     1.5.0    192.168.11.57    TCP mixed
 ```
 
 ### Script-friendly mode
 
 `-s` / `--script` emits one device per line, tab-separated, no header
-or decorations. Field order: `src_ip<TAB>mac<TAB>name<TAB>version<TAB>local_ip<TAB>mode`.
+or decorations. Field order: `mac<TAB>src_ip<TAB>name<TAB>version<TAB>local_ip<TAB>mode`.
 
 Examples:
 
 ```bash
-# Extract just the IPs:
+# Extract just the MACs:
 python3 scripts/wiz750sr_discover.py -s | cut -f1
 
+# Extract just the IPs:
+python3 scripts/wiz750sr_discover.py -s | cut -f2
+
 # Find the IP of a device by name:
-python3 scripts/wiz750sr_discover.py -s | awk -F'\t' '$3=="WIZ750SR-bench" {print $1}'
+python3 scripts/wiz750sr_discover.py -s | awk -F'\t' '$3=="WIZ750SR-bench" {print $2}'
 
 # Loop over discovered devices:
-python3 scripts/wiz750sr_discover.py -s | while IFS=$'\t' read -r ip mac name ver lip mode; do
+python3 scripts/wiz750sr_discover.py -s | while IFS=$'\t' read -r mac ip name ver lip mode; do
     echo "$name @ $ip ($mac)"
 done
 
@@ -319,6 +322,95 @@ prints a warning. Workarounds:
    Then `wsl --shutdown` from PowerShell.
 2. **Run from Windows directly** — install Python on Windows and run
    the script there. Same code works.
+
+---
+
+## `wiz750sr_setdhcp.py`
+
+Configures one, several, or all WIZ750SR modules on the LAN to obtain
+their IP address via DHCP — and prints the updated device list
+(MAC, IP, version) once the modules have rebooted.
+
+### How it works
+
+1. **Discovery** — broadcast UDP SEGCP to find all reachable devices and
+   display the initial table (MAC, current IP, version).
+2. **Configuration** — for each target device, sends a unicast UDP SEGCP
+   packet targeting the device's real MAC (which grants WRITE privilege):
+   - `IM1` — IP address method = DHCP (0 = static, 1 = DHCP)
+   - `SV` — save settings to flash
+   - `RT` — reboot
+3. **Re-discovery** — waits for the reboot delay, then broadcasts again
+   and prints the final table with the newly assigned DHCP IPs.
+
+Both tables are sorted by MAC address (ascending).
+
+### Usage
+
+```bash
+python3 scripts/wiz750sr_setdhcp.py (-a | -m <MAC> [<MAC> ...]) [options]
+```
+
+One of `-a` / `-m` is required.
+
+| Flag | Default | Description |
+|---|---|---|
+| `-a`, `--all` | — | Configure every device that responds to discovery. |
+| `-m MAC [...]`, `--mac MAC [...]` | — | Configure only the listed device(s) (e.g. `AA:BB:CC:DD:EE:FF`). Separators `:`, `-`, `.` accepted. |
+| `-B`, `--broadcast` | `255.255.255.255` | Broadcast address for discovery. Use `192.168.x.255` to scope to one subnet. |
+| `-t`, `--timeout` | `2.0` | Seconds to wait for discovery replies. |
+| `-p`, `--port` | `50001` | SEGCP UDP port. |
+| `-P`, `--password` | empty | Device search password (only if configured). |
+| `-w`, `--reboot-wait` | `8.0` | Seconds to wait for devices to reboot and acquire DHCP leases before the final discovery. |
+
+### Examples
+
+```bash
+# Configure all devices on the LAN
+python3 scripts/wiz750sr_setdhcp.py --all
+
+# Configure a single device
+python3 scripts/wiz750sr_setdhcp.py --mac 00:08:DC:12:34:56
+
+# Configure two devices on a specific subnet
+python3 scripts/wiz750sr_setdhcp.py -m 00:08:DC:12:34:56 00:08:DC:AA:BB:CC -B 192.168.1.255
+```
+
+Typical output:
+
+```
+[*] Discovering devices on 255.255.255.255:50001 (host: Linux) ...
+
+[*] 2 device(s) found:
+MAC                IP               Version
+-----------------  ---------------  -------
+00:08:DC:12:34:56  192.168.11.42    1.5.0
+00:08:DC:AA:BB:CC  192.168.11.57    1.5.0
+
+[*] Configuring 2 device(s) to use DHCP ...
+[*] Sending DHCP SET to 192.168.11.42 (MAC 00:08:DC:12:34:56) ...
+[~] No reply from 00:08:DC:12:34:56 (device may be rebooting).
+[*] Sending DHCP SET to 192.168.11.57 (MAC 00:08:DC:AA:BB:CC) ...
+[~] No reply from 00:08:DC:AA:BB:CC (device may be rebooting).
+
+[*] Waiting 8s for device(s) to reboot and acquire DHCP leases ...
+
+[*] Discovering devices on 255.255.255.255:50001 (host: Linux) ...
+[+] 2 device(s) visible after reboot:
+MAC                IP               Version
+-----------------  ---------------  -------
+00:08:DC:12:34:56  192.168.11.100   1.5.0
+00:08:DC:AA:BB:CC  192.168.11.101   1.5.0
+```
+
+### Notes
+
+- If a target device does not appear after the reboot wait, it is shown
+  as `(not seen)` in the final table. Increase `-w` if your DHCP server
+  is slow (the device must complete IP acquisition before answering
+  SEGCP again).
+- The WSL2 caveat from [`wiz750sr_discover.py`](#wiz750sr_discoverpy)
+  applies equally here.
 
 ---
 
