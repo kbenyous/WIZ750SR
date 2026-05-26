@@ -258,6 +258,9 @@ int8_t   check_DHCP_leasedIP(void);
 /* check the timeout in DHCP process */
 uint8_t  check_DHCP_timeout(void);
 
+/* convert a nibble (0-15) to its ASCII hex character */
+static uint8_t nibble2hexstr(uint8_t nibble);
+
 /* Intialize to timeout process.  */
 void     reset_DHCP_timeout(void);
 
@@ -410,12 +413,16 @@ void send_DHCP_DISCOVER(void)
 	// host name
 	pDHCPMSG->OPT[k++] = hostName;
 	pDHCPMSG->OPT[k++] = 0;          // fill zero length of hostname 
-	for(i = 0 ; HOST_NAME[i] != 0; i++)
-   	pDHCPMSG->OPT[k++] = HOST_NAME[i];
-	pDHCPMSG->OPT[k++] = DHCP_CHADDR[3];
-	pDHCPMSG->OPT[k++] = DHCP_CHADDR[4];
-	pDHCPMSG->OPT[k++] = DHCP_CHADDR[5];
-	pDHCPMSG->OPT[k - (i+3+1)] = i+3; // length of hostname
+	for(i = 0 ; HOST_NAME[i] != 0; i++){
+   		pDHCPMSG->OPT[k++] = HOST_NAME[i];
+	}
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[3] >> 4);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[3] >> 0);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[4] >> 4);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[4] >> 0);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[5] >> 4);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[5] >> 0);
+	pDHCPMSG->OPT[k - (i + 6 + 1)] = i + 6; // length of hostname
 
 	pDHCPMSG->OPT[k++] = dhcpParamRequest;
 	pDHCPMSG->OPT[k++] = 0x06;	// length of request
@@ -523,12 +530,16 @@ void send_DHCP_REQUEST(void)
 	// host name
 	pDHCPMSG->OPT[k++] = hostName;
 	pDHCPMSG->OPT[k++] = 0; // length of hostname
-	for(i = 0 ; HOST_NAME[i] != 0; i++)
-   	pDHCPMSG->OPT[k++] = HOST_NAME[i];
-	pDHCPMSG->OPT[k++] = DHCP_CHADDR[3];
-	pDHCPMSG->OPT[k++] = DHCP_CHADDR[4];
-	pDHCPMSG->OPT[k++] = DHCP_CHADDR[5];
-	pDHCPMSG->OPT[k - (i+3+1)] = i+3; // length of hostname
+	for(i = 0 ; HOST_NAME[i] != 0; i++){
+   		pDHCPMSG->OPT[k++] = HOST_NAME[i];
+	}
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[3] >> 4);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[3] >> 0);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[4] >> 4);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[4] >> 0);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[5] >> 4);
+	pDHCPMSG->OPT[k++] = nibble2hexstr(DHCP_CHADDR[5] >> 0);
+	pDHCPMSG->OPT[k - (i + 6 + 1)] = i + 6; // length of hostname
 	
 	pDHCPMSG->OPT[k++] = dhcpParamRequest;
 	pDHCPMSG->OPT[k++] = 0x08;
@@ -1041,6 +1052,13 @@ uint32_t getDHCPLeasetime(void)
 	return dhcp_lease_time;
 }
 
+static uint8_t nibble2hexstr(uint8_t nibble) {
+	nibble &= 0x0f;
 
+	if (nibble <= 9)
+		return nibble + '0';
+	else
+		return nibble + ('A' - 0x0A);
+}
 
 

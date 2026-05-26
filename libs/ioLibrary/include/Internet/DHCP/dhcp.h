@@ -68,7 +68,7 @@
 #define MAGIC_COOKIE             0x63825363  ///< Any number. You can be modifyed it any number
 
 #define DHCP_VENDOR_ID           "WIZnetSE\0"  ///< Vendor ID used for DHCP requests, using Class-Id (option 60)
-#define DCHP_HOST_NAME           "WIZnet\0"
+#define DCHP_HOST_NAME           "WIZnet-\0"
 
 
 /* 
