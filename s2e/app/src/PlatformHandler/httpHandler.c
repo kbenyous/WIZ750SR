@@ -191,7 +191,7 @@ uint8_t set_devinfo(uint8_t * uri)
 }
 
 
-uint8_t set_devreset(uint8_t * uri)
+uint8_t set_devreset(uint8_t * uri __attribute__((unused)))
 {
 	uint8_t ret = 0;
 
@@ -199,7 +199,7 @@ uint8_t set_devreset(uint8_t * uri)
 	return ret;
 }
 
-uint8_t set_devfacreset(uint8_t * uri)
+uint8_t set_devfacreset(uint8_t * uri __attribute__((unused)))
 {
 	uint8_t ret = 0;
 

@@ -112,7 +112,8 @@ uint32_t write_storage(teDATASTORAGE stype, uint32_t addr, void *data, uint16_t 
 void erase_storage(teDATASTORAGE stype)
 {
 	uint16_t i;
-	uint32_t address, working_address;
+	uint32_t address = 0;
+	uint32_t working_address;
 	
 	uint8_t blocks = 0;
 	uint16_t sectors = 0, remainder = 0;

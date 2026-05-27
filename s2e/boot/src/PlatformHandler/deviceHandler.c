@@ -84,7 +84,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en == SEGCP_ENABLE)
 		{
-			printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %d bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
+			printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %lu bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
 		}
 
 		return DEVICE_FWUP_RET_FAILED;
@@ -95,7 +95,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en == SEGCP_ENABLE)
 		{
-			printf(" > SEGCP:FW_UPDATE:NETWORK - Firmware size: [%d] bytes\r\n", fwupdate->fwup_size);
+			printf(" > SEGCP:FW_UPDATE:NETWORK - Firmware size: [%lu] bytes\r\n", fwupdate->fwup_size);
 		}
 
 		write_fw_len = 0;
@@ -213,7 +213,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en == SEGCP_ENABLE)
 		{
-			printf(" > SEGCP:FW_UPDATE:SUCCESS - %d / %d bytes\r\n", write_fw_len, fwupdate->fwup_size);
+			printf(" > SEGCP:FW_UPDATE:SUCCESS - %lu / %lu bytes\r\n", write_fw_len, fwupdate->fwup_size);
 		}
 		ret = DEVICE_FWUP_RET_SUCCESS;
 	}
@@ -246,7 +246,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en == SEGCP_ENABLE)
 		{
-			printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %d bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
+			printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %lu bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
 		}
 
 		return DEVICE_FWUP_RET_FAILED;
@@ -257,7 +257,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en == SEGCP_ENABLE)
 		{
-			printf(" > SEGCP:FW_UPDATE:NETWORK - Firmware size: [%d] bytes\r\n", fwupdate->fwup_size);
+			printf(" > SEGCP:FW_UPDATE:NETWORK - Firmware size: [%lu] bytes\r\n", fwupdate->fwup_size);
 		}
 
 		write_fw_len = 0;
@@ -314,7 +314,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en == SEGCP_ENABLE)
 		{
-			printf(" > SEGCP:FW_UPDATE:SUCCESS - %d / %d bytes\r\n", write_fw_len, fwupdate->fwup_size);
+			printf(" > SEGCP:FW_UPDATE:SUCCESS - %lu / %lu bytes\r\n", write_fw_len, fwupdate->fwup_size);
 		}
 		ret = DEVICE_FWUP_RET_SUCCESS;
 	}

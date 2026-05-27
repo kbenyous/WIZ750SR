@@ -36,13 +36,13 @@ void xMBPortTimersInit(uint32_t usTim1Timerout50us) {
     if (sum < t35_time_us) sum = 0xFFFFFFFFUL; 
 	
 		mb_timeout_us = sum;
-		printf("mb_timeout = %u\n", mb_timeout_us);
+		printf("mb_timeout = %lu\n", mb_timeout_us);
 	
 		NVIC_EnableIRQ(DUALTIMER1_IRQn);
 	
 		DUALTIMER_ClockEnable(DUALTIMER1_0);
 	
-		printf("Timer Loader val : %u\n", us_to_timer_load(mb_timeout_us));
+		printf("Timer Loader val : %lu\n", us_to_timer_load(mb_timeout_us));
 		Dualtimer_InitStructure.TimerLoad = us_to_timer_load(mb_timeout_us);
     Dualtimer_InitStructure.TimerControl_Mode = DUALTIMER_TimerControl_OneShot;
     Dualtimer_InitStructure.TimerControl_OneShot = DUALTIMER_TimerControl_OneShot;

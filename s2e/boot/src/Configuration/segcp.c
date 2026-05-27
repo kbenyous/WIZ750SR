@@ -223,7 +223,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
 #ifdef _SEGCP_DEBUG_   
 	printf("SEGCP_REQ : %s\r\n",segcp_req);
 #endif
-	memset(trep, 0, sizeof(trep));
+	trep[0] = '\0';
 	treq = strtok(segcp_req, SEGCP_DELIMETER);
 	
 	while(treq)
@@ -805,7 +805,6 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
 					case SEGCP_UE: // User echo, Not used
 						tmp_byte = is_hex(*param);
 						if(param_len != 1 || tmp_byte > SEGCP_ENABLE) ret |= SEGCP_RET_ERR_INVALIDPARAM;
-						else ;
 						break;
                     case SEGCP_SC: // SET status pin mode selector
                         str_to_hex(param, &tmp_byte);
@@ -1043,7 +1042,7 @@ uint16_t proc_SEGCP_tcp(uint8_t* segcp_req, uint8_t* segcp_rep)
 			
 		case SOCK_CLOSE_WAIT:
 			disconnect(SEGCP_TCP_SOCK);
-		
+			__attribute__((fallthrough)); // Compile-time info, tells GCC that no break is intentional at the end of this case
 		case SOCK_CLOSED:
 		case SOCK_FIN_WAIT:
 			close(SEGCP_TCP_SOCK);

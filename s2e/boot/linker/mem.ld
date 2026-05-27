@@ -15,14 +15,14 @@ MEMORY
 {
   FLASH       (rx)  : ORIGIN = 0x00000000, LENGTH = 0x7000  /* Boot code: up to remap area */
   FLASH_REMAP (rx)  : ORIGIN = 0x00007D00, LENGTH = 0x00FF /* Remap stubs (overwritten by App) */
-  RAM         (xrw) : ORIGIN = 0x20000000, LENGTH = 0x4000
+  RAM          (rw) : ORIGIN = 0x20000000, LENGTH = 0x4000
 
   /*
    * Optional sections; define the origin and length to match
    * the the specific requirements of your hardware. The zero
    * length prevents inadvertent allocation.
    */
-  CCMRAM (xrw) : ORIGIN = 0x10000000, LENGTH = 0
+  CCMRAM  (rw) : ORIGIN = 0x10000000, LENGTH = 0
   FLASHB1 (rx) : ORIGIN = 0x00000000, LENGTH = 0
   EXTMEMB0 (rx) : ORIGIN = 0x00000000, LENGTH = 0
   EXTMEMB1 (rx) : ORIGIN = 0x00000000, LENGTH = 0

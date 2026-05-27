@@ -104,8 +104,7 @@ uint32_t write_flash(uint32_t addr, uint8_t * data, uint32_t data_len)
 
 uint32_t read_flash(uint32_t addr, uint8_t *data, uint32_t data_len)
 {
-	int32_t i;
-
+	uint32_t i = 0;
 	for(i = 0; i < data_len; i++)
 	{
 		data[i] = *(uint8_t *) (addr + i);
