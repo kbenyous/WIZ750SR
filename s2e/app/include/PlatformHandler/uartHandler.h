@@ -103,11 +103,12 @@ enum flow_ctrl {
 
 extern uint8_t flag_ringbuf_full;
 
-extern uint8_t word_len_table[];
-extern uint8_t stop_bit_table[];
-extern uint8_t * parity_table[];
-extern uint8_t * flow_ctrl_table[];
-extern uint8_t * uart_if_table[];
+extern const uint8_t word_len_table[];
+extern const uint8_t stop_bit_table[];
+extern const char * const parity_table[];
+extern const char * const flow_ctrl_table[];
+extern const char * const uart_if_table[];
+extern const uint32_t baud_table[];
 
 void S2E_UART_IRQ_Handler(UART_TypeDef * s2e_uart);
 void S2E_UART_Configuration(void);

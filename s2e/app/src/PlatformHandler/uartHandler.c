@@ -43,12 +43,12 @@ BUFFER_DEFINITION(data_rx, SEG_DATA_BUF_SIZE);
 	IRQn_Type 			UART_data_irq = UART1_IRQn;
 #endif
 
-uint8_t word_len_table[] = {7, 8, 9};
-uint8_t * parity_table[] = {(uint8_t *)"N", (uint8_t *)"ODD", (uint8_t *)"EVEN"};
-uint8_t stop_bit_table[] = {1, 2};
-uint8_t * flow_ctrl_table[] = {(uint8_t *)"NONE", (uint8_t *)"XON/XOFF", (uint8_t *)"RTS/CTS", (uint8_t *)"RTS Only"};
-uint8_t * uart_if_table[] = {(uint8_t *)UART_IF_STR_RS232_TTL, (uint8_t *)UART_IF_STR_RS422_485};
-uint32_t baud_table[] = {300, 600, 1200, 1800, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200, 230400, 460800};
+const uint8_t word_len_table[] = {7, 8, 9};
+const char * const parity_table[] = {"N", "ODD", "EVEN"};
+const uint8_t stop_bit_table[] = {1, 2};
+const char * const flow_ctrl_table[] = {"NONE", "XON/XOFF", "RTS/CTS", "RTS Only"};
+const char * const uart_if_table[] = {UART_IF_STR_RS232_TTL, UART_IF_STR_RS422_485};
+const uint32_t baud_table[] = {300, 600, 1200, 1800, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200, 230400, 460800};
 
 // XON/XOFF Status; 
 static uint8_t xonoff_status = UART_XON;

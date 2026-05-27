@@ -564,8 +564,8 @@ void display_Dev_Info_main(void)
 {
     //uint8_t i;
     DevConfig *dev_config = get_DevConfig_pointer();
-    uint32_t baud_table[] = {300, 600, 1200, 1800, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200, 230400, 460800};
-    
+
+
     printf(" - Device name: %s\r\n", dev_config->module_name);
     printf(" - Device mode: %s\r\n", str_working[dev_config->network_info[0].working_mode]);
     
