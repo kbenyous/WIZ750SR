@@ -88,7 +88,9 @@ typedef struct _st_http_socket
 }st_http_socket;
 
 // Web content structure for file in code flash memory
-#define MAX_CONTENT_CALLBACK		20
+#ifndef MAX_CONTENT_CALLBACK
+#define MAX_CONTENT_CALLBACK		4
+#endif
 
 typedef struct _httpServer_webContent
 {
