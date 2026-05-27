@@ -119,6 +119,6 @@ uint16_t getDeviceUptime_msec(void)
 	return msec_cnt;
 }
 
-void set_phylink_time_check(uint8_t enable)
+void set_phylink_time_check(uint8_t __attribute__ ((unused)) enable)
 {;}
 

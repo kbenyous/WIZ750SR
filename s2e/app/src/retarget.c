@@ -79,12 +79,11 @@ void _sys_exit(int return_code) {
 #include <sys/stat.h>
 #include <unistd.h>
 
-__attribute__ ((used))  int _write (int fd, char *ptr, int len)
+__attribute__ ((used))  int _write (int __attribute__((unused)) fd, char *ptr, int len)
 {
-  size_t i;
-  for (i=0; i<len;i++) {
+  for (int i=0; i<len;i++) {
     UART_SEND_BYTE(ptr[i]); // call character output function
-    }
+  }
   return len;
 }
 

@@ -57,7 +57,7 @@ void eMBRTUInit(uint32_t ulBaudRate) {
         }
     }
 
-    printf("Baud Rate: %u, usTimerT35_50us = %u\r\n", baud_table[ulBaudRate], usTimerT35_50us);
+    printf("Baud Rate: %lu, usTimerT35_50us = %lu\r\n", baud_table[ulBaudRate], usTimerT35_50us);
     xMBPortTimersInit(usTimerT35_50us); // Initialize timer
 }
 

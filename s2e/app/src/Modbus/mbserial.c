@@ -20,7 +20,7 @@ BUFFER_DECLARATION(data_rx);
 */
 
 int UART_read(void *data, int bytes) {
-    uint32_t i;
+    int i;
     uint8_t *data_ptr = data;
     if (IS_BUFFER_EMPTY(data_rx)) {
         return RET_NOK;

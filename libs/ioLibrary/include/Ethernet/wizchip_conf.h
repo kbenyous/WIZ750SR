@@ -1,12 +1,12 @@
 /*******************************************************************************************************************************************************
- * Copyright ¡§I 2016 <WIZnet Co.,Ltd.> 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ¢®¡ÆSoftware¢®¡¾), 
+ * Copyright ï¿½ï¿½I 2016 <WIZnet Co.,Ltd.> 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ï¿½ï¿½ï¿½ï¿½Softwareï¿½ï¿½ï¿½ï¿½), 
  * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
  * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
- * THE SOFTWARE IS PROVIDED ¢®¡ÆAS IS¢®¡¾, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * THE SOFTWARE IS PROVIDED ï¿½ï¿½ï¿½ï¿½AS ISï¿½ï¿½ï¿½ï¿½, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -87,7 +87,7 @@
 
 
 #if   (_WIZCHIP_ == 5100)
-   #define _WIZCHIP_ID_                "W5100\0"
+   #define _WIZCHIP_ID_                "W5100"
 /**
  * @brief Define interface mode.
  * @todo you should select interface mode as chip. Select one of @ref \_WIZCHIP_IO_MODE_SPI_ , @ref \_WIZCHIP_IO_MODE_BUS_DIR_ or @ref \_WIZCHIP_IO_MODE_BUS_INDIR_
@@ -98,7 +98,7 @@
    #define _WIZCHIP_IO_MODE_           _WIZCHIP_IO_MODE_SPI_
 
 #elif (_WIZCHIP_ == 5200)
-   #define _WIZCHIP_ID_                "W5200\0"
+   #define _WIZCHIP_ID_                "W5200"
 /**
  * @brief Define interface mode.
  * @todo you should select interface mode as chip. Select one of @ref \_WIZCHIP_IO_MODE_SPI_ or @ref \_WIZCHIP_IO_MODE_BUS_INDIR_
@@ -107,7 +107,7 @@
    #define _WIZCHIP_IO_MODE_           _WIZCHIP_IO_MODE_SPI_
    #include "W5200/w5200.h"
 #elif (_WIZCHIP_ == 5500)
-  #define _WIZCHIP_ID_                 "W5500\0"
+  #define _WIZCHIP_ID_                 "W5500"
   
 /**
  * @brief Define interface mode. \n
@@ -126,7 +126,7 @@
    #define _WIZCHIP_IO_MODE_           _WIZCHIP_IO_MODE_SPI_VDM_
    #include "W5500/w5500.h"
 #elif (_WIZCHIP_ == 7500)
-  #define _WIZCHIP_ID_                 "W7500\0"
+  #define _WIZCHIP_ID_                 "W7500"
   
 /**
  * @brief Define interface mode. \n

@@ -115,9 +115,10 @@ uint8_t wizchip_spi_readbyte(void)        {return 0;};
 /**
  * @brief Default function to write in SPI interface.
  * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
+ * null function is called. __attribute__((unused)) is for gcc warning only : the wiznet function needs this function definition.
+ * 
  */
-void 	wizchip_spi_writebyte(uint8_t wb) {};
+void 	wizchip_spi_writebyte(uint8_t __attribute__((unused)) wb) {};
 
 /**
  * @\ref _WIZCHIP instance

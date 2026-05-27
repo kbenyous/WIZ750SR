@@ -1,12 +1,12 @@
 /*******************************************************************************************************************************************************
- * Copyright ¡§I 2016 <WIZnet Co.,Ltd.> 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ¢®¡ÆSoftware¢®¡¾), 
+ * Copyright ï¿½ï¿½I 2016 <WIZnet Co.,Ltd.> 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ï¿½ï¿½ï¿½ï¿½Softwareï¿½ï¿½ï¿½ï¿½), 
  * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
  * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
- * THE SOFTWARE IS PROVIDED ¢®¡ÆAS IS¢®¡¾, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * THE SOFTWARE IS PROVIDED ï¿½ï¿½ï¿½ï¿½AS ISï¿½ï¿½ï¿½ï¿½, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -265,8 +265,6 @@ uint8_t I2C_ReadByte(I2C_ConfigStruct* conf)
 
 int I2C_Write(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
 {
-    int i;
-    
     I2C_Start(conf);
     
     //Write addr
@@ -277,7 +275,7 @@ int I2C_Write(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
     }
 
     //Write data
-    for(i=0; i<len; i++)
+    for(uint32_t i=0; i<len; i++)
     {
         if(I2C_WriteByte(conf, data[i]))
             return -1;
@@ -290,8 +288,6 @@ int I2C_Write(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
 
 int I2C_WriteRepeated(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
 {
-    int i;
-    
     I2C_Start(conf);
     
     //Write addr
@@ -302,7 +298,7 @@ int I2C_WriteRepeated(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint3
     }
 
     //Write data
-    for(i=0; i<len; i++)
+    for(uint32_t i=0; i<len; i++)
     {
         if(I2C_WriteByte(conf, data[i]))
             return -1;
@@ -313,8 +309,6 @@ int I2C_WriteRepeated(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint3
 
 int I2C_Read(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
 {
-    int i;
-    
     I2C_Start(conf);
     
     //Write addr | read command
@@ -325,7 +319,7 @@ int I2C_Read(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
     }
     
     //Read data
-    for(i=0; i<len; i++)
+    for(uint32_t i=0; i<len; i++)
     {
         data[i] = I2C_ReadByte(conf);
         
@@ -342,8 +336,6 @@ int I2C_Read(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
 
 int I2C_ReadRepeated(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32_t len)
 {
-    int i;
-    
     I2C_Start(conf);
     
     //Write addr | read command
@@ -354,7 +346,7 @@ int I2C_ReadRepeated(I2C_ConfigStruct* conf, uint8_t addr, uint8_t* data, uint32
     }
     
     //Read data
-    for(i=0; i<len; i++)
+    for(uint32_t i=0; i<len; i++)
     {
         data[i] = I2C_ReadByte(conf);
         

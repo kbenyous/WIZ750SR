@@ -115,7 +115,6 @@ void delay(__IO uint32_t milliseconds); //Notice: used ioLibray
 
 /* Private variables ---------------------------------------------------------*/
 static __IO uint32_t TimingDelay;
-static WDT_InitTypeDef WDT_InitStructure;
 
 /* Public variables ---------------------------------------------------------*/
 // Shared buffer declaration
@@ -135,7 +134,6 @@ int main(void)
 {
 	DevConfig *dev_config = get_DevConfig_pointer();
 	uint8_t appjump_enable = OFF;
-	uint8_t ret = 0;
 	int rst_info = 0;
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +182,7 @@ int main(void)
 		// Firmware download has already been done at application routine.
 			// 1. 50kB app mode: Firmware copy: [App backup] -> [App main]
 			// 2. 100kB app mode: Firmware download and write: [Network] -> [App main] (default)
-		ret = device_firmware_update(STORAGE_APP_MAIN);
+		device_firmware_update(STORAGE_APP_MAIN);
 		
 		dev_config->firmware_update.fwup_flag = SEGCP_DISABLE;
 		dev_config->firmware_update.fwup_size = 0;
@@ -360,7 +358,7 @@ static void W7500x_Init(void)
 	printf("\r\n >> W7500x MCU Clock Settings ===============\r\n"); 
 	printf(" - GetPLLSource: %s, %lu (Hz)\r\n", GetPLLSource()?"External":"Internal", PLL_SOURCE_8MHz);
 	printf(" - SetSystemClock: %lu (Hz) \r\n", SYSTEM_CLOCK_8MHz);
-	printf(" - GetSystemClock: %d (Hz) \r\n", GetSystemClock());
+	printf(" - GetSystemClock: %lu (Hz) \r\n", GetSystemClock());
 #endif
 }
 
@@ -383,7 +381,7 @@ static void W7500x_WZTOE_Init(void)
 	/* Set WZ_100US Register */
 	setTIC100US((GetSystemClock()/10000));
 #ifdef _MAIN_DEBUG_
-	printf(" GetSystemClock: %X, getTIC100US: %X, (%X) \r\n", GetSystemClock(), getTIC100US(), *(uint32_t *)WZTOE_TIC100US); // for debugging
+	printf(" GetSystemClock: %lX, getTIC100US: %X, (%lX) \r\n", GetSystemClock(), getTIC100US(), *(uint32_t *)WZTOE_TIC100US); // for debugging
 #endif
 	/* Set TCP Timeout: retry count / timeout val */
 	// Retry count default: [8], Timeout val default: [2000]

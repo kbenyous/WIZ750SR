@@ -731,7 +731,7 @@ uint32_t get_httpServer_timecount(void)
 	return httpServer_tick_1s;
 }
 
-void reg_httpServer_webContent(uint8_t * content_name, uint8_t * content)
+void reg_httpServer_webContent(uint8_t * content_name, const uint8_t * content)
 {
 	//uint16_t name_len;
 	uint32_t content_len;
@@ -811,7 +811,7 @@ uint8_t find_userReg_webContent(uint8_t * content_name, uint16_t * content_num, 
 uint16_t read_userReg_webContent(uint16_t content_num, uint8_t * buf, uint32_t offset, uint16_t size)
 {
 	uint16_t ret = 0;
-	uint8_t * ptr;
+	const uint8_t * ptr;
 
 	if(content_num > total_content_cnt) return 0;
 

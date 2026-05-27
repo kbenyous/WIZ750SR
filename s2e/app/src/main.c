@@ -355,9 +355,9 @@ static void W7500x_Init(void)
 #ifdef _MAIN_DEBUG_
     printf("\r\n >> W7500x MCU Clock Settings ===============\r\n"); 
     printf(" - GetPLLSource: %s, %lu (Hz)\r\n", GetPLLSource()?"External":"Internal", DEVICE_PLL_SOURCE_CLOCK);
-    printf("\t+ CRG->PLL_FCR: 0x%.8x\r\n", CRG->PLL_FCR);
+    printf("\t+ CRG->PLL_FCR: 0x%.8lx\r\n", CRG->PLL_FCR);
     printf(" - SetSystemClock: %lu (Hz) \r\n", DEVICE_TARGET_SYSTEM_CLOCK);
-    printf(" - GetSystemClock: %d (Hz) \r\n", GetSystemClock());
+    printf(" - GetSystemClock: %lu (Hz) \r\n", GetSystemClock());
 #endif
 }
 
@@ -382,7 +382,7 @@ static void W7500x_WZTOE_Init(void)
     setTIC100US((GetSystemClock()/10000));
 #ifdef _MAIN_DEBUG_
     printf("\r\n >> WZTOE Settings ==========================\r\n");
-    printf(" - getTIC100US: %X, (%X) \r\n", getTIC100US(), *(uint32_t *)WZTOE_TIC100US); // for debugging
+    printf(" - getTIC100US: %X, (%lX) \r\n", getTIC100US(), *(uint32_t *)WZTOE_TIC100US); // for debugging
 #endif
     
     /* Set Network Configuration */
@@ -594,7 +594,7 @@ void display_Dev_Info_main(void)
     printf(" - Serial settings: \r\n");
         printf("\t- Data %s port:  [%s%d]\r\n", STR_UART, STR_UART, SEG_DATA_UART);
         printf("\t   + UART IF: [%s]\r\n", uart_if_table[dev_config->serial_info[0].uart_interface]);
-        printf("\t   + %d-", baud_table[dev_config->serial_info[0].baud_rate]);
+        printf("\t   + %lu-", baud_table[dev_config->serial_info[0].baud_rate]);
         printf("%d-", word_len_table[dev_config->serial_info[0].data_bits]);
         printf("%s-", parity_table[dev_config->serial_info[0].parity]);
         printf("%d / ", stop_bit_table[dev_config->serial_info[0].stop_bits]);
@@ -658,7 +658,7 @@ void display_Dev_Info_dhcp(void)
     
     if(dev_config->options.dhcp_use) 
     {
-        if(flag_process_dhcp_success == ON) printf(" # DHCP IP Leased time : %u seconds\r\n", getDHCPLeasetime());
+        if(flag_process_dhcp_success == ON) printf(" # DHCP IP Leased time : %lu seconds\r\n", getDHCPLeasetime());
         else printf(" # DHCP Failed\r\n");
     }
 }

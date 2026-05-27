@@ -1417,6 +1417,7 @@ uint8_t check_serial_store_permitted(uint8_t ch)
 	{
 		case ST_OPEN:
 			if(net->working_mode != TCP_MIXED_MODE) break;
+			__attribute__((fallthrough)); // Compile-time info, tells GCC that no break is intentional at the end of this case
 		case ST_CONNECT:
 		case ST_UDP:
 		case ST_ATMODE:
@@ -1634,9 +1635,9 @@ uint16_t debugSerial_dataTransfer(uint8_t * buf, uint16_t size, teDEBUGTYPE type
     
 //#ifdef __USE_DEBUG_UPTIME__
     if(getDeviceUptime_day() > 0)
-        printf(" [%dd/%02d:%02d:%02d]", getDeviceUptime_day(), getDeviceUptime_hour(), getDeviceUptime_min(), getDeviceUptime_sec());
+        printf(" [%ldd/%02ld:%02d:%02d]", getDeviceUptime_day(), getDeviceUptime_hour(), getDeviceUptime_min(), getDeviceUptime_sec());
     else
-        printf(" [%02d:%02d:%02d]", getDeviceUptime_hour(), getDeviceUptime_min(), getDeviceUptime_sec());
+        printf(" [%02ld:%02d:%02d]", getDeviceUptime_hour(), getDeviceUptime_min(), getDeviceUptime_sec());
 //#endif
     
     if((type == SEG_DEBUG_S2E) || (type == SEG_DEBUG_E2S))

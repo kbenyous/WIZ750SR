@@ -92,7 +92,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 		{
 			if(serial->serial_debug_en)
 			{
-				printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %d bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
+				printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %lu bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
 			}
 
 			return DEVICE_FWUP_RET_FAILED;
@@ -182,7 +182,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 		{
 			if(serial->serial_debug_en)
 			{
-				printf(" > SEGCP:FW_UPDATE:SUCCESS - %d / %d bytes\r\n", write_fw_len, fwupdate->fwup_size);
+				printf(" > SEGCP:FW_UPDATE:SUCCESS - %lu / %lu bytes\r\n", write_fw_len, fwupdate->fwup_size);
 			}
 			ret = DEVICE_FWUP_RET_SUCCESS;
 		}
@@ -221,7 +221,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en)
 		{
-			printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %d bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
+			printf(" > SEGCP:FW_UPDATE:FAILED - Invalid firmware size: %lu bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_FWUP_SIZE);
 		}
 
 		return DEVICE_FWUP_RET_FAILED;
@@ -232,7 +232,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en)
 		{
-			printf(" > SEGCP:FW_UPDATE:NETWORK - Firmware size: [%d] bytes\r\n", fwupdate->fwup_size);
+			printf(" > SEGCP:FW_UPDATE:NETWORK - Firmware size: [%lu] bytes\r\n", fwupdate->fwup_size);
 		}
 
 		write_fw_len = 0;
@@ -289,7 +289,7 @@ uint8_t device_firmware_update(teDATASTORAGE stype)
 	{
 		if(serial->serial_debug_en)
 		{
-			printf(" > SEGCP:FW_UPDATE:SUCCESS - %d / %d bytes\r\n", write_fw_len, fwupdate->fwup_size);
+			printf(" > SEGCP:FW_UPDATE:SUCCESS - %lu / %lu bytes\r\n", write_fw_len, fwupdate->fwup_size);
 		}
 		ret = DEVICE_FWUP_RET_SUCCESS;
 	}
@@ -317,11 +317,11 @@ uint8_t device_appboot_update(void)
 
     if((fwupdate->fwup_size == 0) || (fwupdate->fwup_size > DEVICE_BOOT_SIZE))
     {
-        if(serial->serial_debug_en) printf(" > SEGCP:BU_UPDATE:FAILED - Invalid firmware size: %d bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_BOOT_SIZE);
+        if(serial->serial_debug_en) printf(" > SEGCP:BU_UPDATE:FAILED - Invalid firmware size: %lu bytes (Firmware size must be within %d bytes)\r\n", fwupdate->fwup_size, DEVICE_BOOT_SIZE);
         return DEVICE_FWUP_RET_FAILED;
     }
 
-    if(serial->serial_debug_en) printf(" > SEGCP:BU_UPDATE:NETWORK - Firmware size: [%d] bytes\r\n", fwupdate->fwup_size);
+    if(serial->serial_debug_en) printf(" > SEGCP:BU_UPDATE:NETWORK - Firmware size: [%lu] bytes\r\n", fwupdate->fwup_size);
 
     write_fw_len = 0;
     erase_storage(STORAGE_APPBOOT); // Erase flash blocks
@@ -370,7 +370,7 @@ uint8_t device_appboot_update(void)
     {
         Copy_Interrupt_VectorTable(DEVICE_APP_MAIN_ADDR, vectortable);
         
-        if(serial->serial_debug_en) printf(" > SEGCP:BU_UPDATE:SUCCESS - %d / %d bytes\r\n", write_fw_len, fwupdate->fwup_size);
+        if(serial->serial_debug_en) printf(" > SEGCP:BU_UPDATE:SUCCESS - %lu / %lu bytes\r\n", write_fw_len, fwupdate->fwup_size);
         ret = DEVICE_FWUP_RET_SUCCESS;
     }
 
