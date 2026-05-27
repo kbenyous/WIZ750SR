@@ -33,19 +33,19 @@ uint16_t uart_get_commandline(uint8_t uartNum, uint8_t* buf, uint16_t maxSize);
 uint8_t gSEGCPREQ[CONFIG_BUF_SIZE];
 uint8_t gSEGCPREP[CONFIG_BUF_SIZE];
 
-uint8_t * strDEVSTATUS[]  = {"BOOT", "OPEN", "CONNECT", "UPGRADE", "ATMODE", "UDP", 0};
+static const char * const strDEVSTATUS[]  = {"BOOT", "OPEN", "CONNECT", "UPGRADE", "ATMODE", "UDP", 0};
 
 // [K!]: Hidden command, Erase the MAC address and configuration data
-uint8_t * tbSEGCPCMD[] = {"MC", "VR", "MN", "IM", "OP", "DD", "CP", "PO", "DG", "KA", 
+static const char * const tbSEGCPCMD[] = {"MC", "VR", "MN", "IM", "OP", "DD", "CP", "PO", "DG", "KA",
                           "KI", "KE", "RI", "LI", "SM", "GW", "DS", "PI", "PP", "DX",
                           "DP", "DI", "DW", "DH", "LP", "RP", "RH", "BR", "DB", "PR",
                           "SB", "FL", "IT", "PT", "PS", "PD", "TE", "SS", "NP", "SP",
                           "LG", "ER", "FW", "MA", "PW", "SV", "EX", "RT", "UN", "ST",
-                          "FR", "EC", "K!", "UE", "GA", "GB", "GC", "GD", "CA", "CB", 
+                          "FR", "EC", "K!", "UE", "GA", "GB", "GC", "GD", "CA", "CB",
                           "CC", "CD", "SC", "S0", "S1", "RX", "FS", "FC", "FP", "FD",
                           "FH", "UI", "AB", "TR", "BU", "MB", 0};
-                            
-uint8_t * tbSEGCPERR[] = {"ERNULL", "ERNOTAVAIL", "ERNOPARAM", "ERIGNORED", "ERNOCOMMAND", "ERINVALIDPARAM", "ERNOPRIVILEGE"};
+
+static const char * const tbSEGCPERR[] = {"ERNULL", "ERNOTAVAIL", "ERNOPARAM", "ERIGNORED", "ERNOCOMMAND", "ERINVALIDPARAM", "ERNOPRIVILEGE"};
 
 uint8_t gSEGCPPRIVILEGE = SEGCP_PRIVILEGE_CLR;
 
@@ -218,10 +218,10 @@ void do_segcp(void)
 
 uint8_t parse_SEGCP(uint8_t * pmsg, uint8_t * param)
 {
-    uint8_t** pcmd;
+    const char * const * pcmd;
     uint8_t cmdnum = 0;
     uint8_t i;
-    
+
     *param = 0;
 
     for(pcmd = tbSEGCPCMD; *pcmd != 0; pcmd++)
@@ -1182,7 +1182,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
             if(ret & SEGCP_RET_ERR)
             {
                 treq[2] = 0;
-                sprintf(trep,"%s:%s\r\n",tbSEGCPERR[((ret-SEGCP_RET_ERR) >> 8)],(cmdnum!=SEGCP_UNKNOWN)? tbSEGCPCMD[cmdnum] : treq);
+                sprintf(trep,"%s:%s\r\n",tbSEGCPERR[((ret-SEGCP_RET_ERR) >> 8)],(cmdnum!=SEGCP_UNKNOWN)? (uint8_t *)tbSEGCPCMD[cmdnum] : treq);
 #ifdef _SEGCP_DEBUG_
                 printf("ERROR : %s\r\n",trep);
 #endif

@@ -20,7 +20,6 @@ static volatile uint16_t usRcvBufferPos;
 volatile uint8_t *pucTCPBufferCur;
 volatile uint16_t usTCPBufferPos;
 extern volatile uint8_t mb_state_rtu_finish;
-extern uint32_t baud_table[];
 
 void eMBRTUInit(uint32_t ulBaudRate) {
     uint32_t usTimerT35_50us;

@@ -42,8 +42,8 @@ typedef enum
 extern uint8_t        USER_IO_SEL[];
 extern const char*    USER_IO_STR[];
 extern const char*    USER_IO_PIN_STR[];
-extern const char*    USER_IO_TYPE_STR[];
-extern const char*    USER_IO_DIR_STR[];
+extern const char* const USER_IO_TYPE_STR[];
+extern const char* const USER_IO_DIR_STR[];
 
 void IO_Configuration(void);
 

@@ -12,7 +12,7 @@
 
 #ifdef __USE_USERS_GPIO__
 	const uint16_t USER_IO_PIN[USER_IOn] =     {USER_IO_A_PIN, USER_IO_B_PIN, USER_IO_C_PIN, USER_IO_D_PIN};
-	GPIO_TypeDef* USER_IO_PORT[USER_IOn] =     {USER_IO_A_PORT, USER_IO_B_PORT, USER_IO_C_PORT, USER_IO_D_PORT};
+	GPIO_TypeDef* const USER_IO_PORT[USER_IOn] = {USER_IO_A_PORT, USER_IO_B_PORT, USER_IO_C_PORT, USER_IO_D_PORT};
 	uint8_t     USER_IO_ADC_CH[USER_IOn] =     {USER_IO_A_ADC_CH, USER_IO_B_ADC_CH, USER_IO_C_ADC_CH, USER_IO_D_ADC_CH};
 
 	uint8_t        USER_IO_SEL[USER_IOn] =     {USER_IO_A, USER_IO_B, USER_IO_C, USER_IO_D};
@@ -22,8 +22,8 @@
 	#else
 		const char*    USER_IO_PIN_STR[USER_IOn] = {"PC28\0", "PC27\0", "PC26\0", "PC25\0",}; // W(IZ750SR
 	#endif
-	const char*    USER_IO_TYPE_STR[] =        {"Digital", "Analog"};
-	const char*    USER_IO_DIR_STR[] =         {"Input", "Output"};
+	const char* const USER_IO_TYPE_STR[] =     {"Digital", "Analog"};
+	const char* const USER_IO_DIR_STR[] =      {"Input", "Output"};
 #endif
 
 /**

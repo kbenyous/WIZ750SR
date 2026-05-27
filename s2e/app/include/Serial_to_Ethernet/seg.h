@@ -38,7 +38,7 @@ extern uint8_t flag_s2e_application_running;
 extern uint8_t flag_process_dhcp_success;
 extern uint8_t flag_process_ip_success;
 extern uint8_t flag_process_dns_success;
-extern char * str_working[];
+extern const char * const str_working[];
 
 typedef enum{SEG_UART_RX, SEG_UART_TX, SEG_ETHER_RX, SEG_ETHER_TX, SEG_ALL} teDATADIR;
 typedef enum{

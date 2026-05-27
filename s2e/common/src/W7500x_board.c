@@ -20,15 +20,15 @@ extern void set_phylink_time_check(uint8_t enable);
 static void PHY_Init(void);
 //static void delay_ms(uint32_t ms);
 #if (LEDn == 2)
-  GPIO_TypeDef* LED_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT};
-  const uint16_t LED_PIN[LEDn] = {LED1_PIN, LED2_PIN};
-  PAD_Type LED_PAD[LEDn] = {LED1_GPIO_PAD, LED2_GPIO_PAD};
-  PAD_AF_TypeDef LED_PAD_AF[LEDn] = {LED1_GPIO_PAD_AF, LED2_GPIO_PAD_AF};
+  static GPIO_TypeDef* const LED_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT};
+  static const uint16_t LED_PIN[LEDn] = {LED1_PIN, LED2_PIN};
+  static const PAD_Type LED_PAD[LEDn] = {LED1_GPIO_PAD, LED2_GPIO_PAD};
+  static const PAD_AF_TypeDef LED_PAD_AF[LEDn] = {LED1_GPIO_PAD_AF, LED2_GPIO_PAD_AF};
 #else
-  GPIO_TypeDef* LED_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT, LED3_GPIO_PORT};
-  const uint16_t LED_PIN[LEDn] = {LED1_PIN, LED2_PIN, LED3_PIN};
-  PAD_Type LED_PAD[LEDn] = {LED1_GPIO_PAD, LED2_GPIO_PAD, LED3_GPIO_PAD};
-  PAD_AF_TypeDef LED_PAD_AF[LEDn] = {LED1_GPIO_PAD_AF, LED2_GPIO_PAD_AF, LED3_GPIO_PAD_AF};
+  static GPIO_TypeDef* const LED_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT, LED3_GPIO_PORT};
+  static const uint16_t LED_PIN[LEDn] = {LED1_PIN, LED2_PIN, LED3_PIN};
+  static const PAD_Type LED_PAD[LEDn] = {LED1_GPIO_PAD, LED2_GPIO_PAD, LED3_GPIO_PAD};
+  static const PAD_AF_TypeDef LED_PAD_AF[LEDn] = {LED1_GPIO_PAD_AF, LED2_GPIO_PAD_AF, LED3_GPIO_PAD_AF};
 #endif
 volatile uint16_t phylink_check_time_msec = 0;
 uint8_t flag_check_phylink = 0;
