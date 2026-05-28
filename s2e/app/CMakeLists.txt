@@ -63,7 +63,15 @@ set(SOURCES
 
 add_executable(WIZ750SR_S2E_App ${SOURCES} ${HEADER_FILES})
 
+# Generate gen-src/index.h from html/index.html (as `_acindex` byte array).
+embed_file_to_header(WIZ750SR_S2E_App
+    ${CMAKE_CURRENT_SOURCE_DIR}/html/index.html
+    ${CMAKE_CURRENT_SOURCE_DIR}/gen-src/index.h
+    _acindex
+)
+
 target_include_directories(WIZ750SR_S2E_App PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/gen-src
     ${INCLUDE_DIR}/
     ${INCLUDE_DIR}/Serial_to_Ethernet
     ${INCLUDE_DIR}/PlatformHandler
