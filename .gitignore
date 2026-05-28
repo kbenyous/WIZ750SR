@@ -81,6 +81,9 @@
 /build/*
 .vscode/*
 
+# Generated embedded resources (produced by embed_file_to_header)
+/s2e/app/gen-src/
+
 # Python bytecode (scripts/)
 *.pyc
 __pycache__/
