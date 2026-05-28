@@ -43,7 +43,7 @@ static const char * const tbSEGCPCMD[] = {"MC", "VR", "MN", "IM", "OP", "DD", "C
                           "LG", "ER", "FW", "MA", "PW", "SV", "EX", "RT", "UN", "ST",
                           "FR", "EC", "K!", "UE", "GA", "GB", "GC", "GD", "CA", "CB",
                           "CC", "CD", "SC", "S0", "S1", "RX", "FS", "FC", "FP", "FD",
-                          "FH", "UI", "AB", "TR", "BU", "MB", 0};
+                          "FH", "UI", "AB", "TR", "BU", "MB", "AR", 0};
 
 static const char * const tbSEGCPERR[] = {"ERNULL", "ERNOTAVAIL", "ERNOPARAM", "ERIGNORED", "ERNOCOMMAND", "ERINVALIDPARAM", "ERNOPRIVILEGE"};
 
@@ -622,6 +622,9 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                     case SEGCP_MB:
                         sprintf(trep,"%d", dev_config->modbus_enable);
                         break;
+                    case SEGCP_AR:
+                        sprintf(trep, "%d", dev_config->auto_reboot_min);
+                        break;
                     default:
                         ret |= SEGCP_RET_ERR_NOCOMMAND;
                         sprintf(trep,"%s", strDEVSTATUS[dev_config->network_info[0].state]);
@@ -1146,7 +1149,22 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                             dev_config->modbus_enable = tmp_int;
                         }
                         break;
-                        
+
+                    case SEGCP_AR:
+                        {
+                            uint16_t i;
+                            uint8_t digits_only = 1;
+                            for(i = 0; i < param_len; i++)
+                                if(param[i] < '0' || param[i] > '9') { digits_only = 0; break; }
+                            tmp_long = atol(param);
+                            if(param_len < 1 || param_len > 5 || !digits_only ||
+                               tmp_long < 0 || tmp_long > 0xFFFF)
+                                ret |= SEGCP_RET_ERR_INVALIDPARAM;
+                            else
+                                dev_config->auto_reboot_min = (uint16_t)tmp_long;
+                        }
+                        break;
+
                     case SEGCP_UN:
                     case SEGCP_ST:
                     case SEGCP_LG:

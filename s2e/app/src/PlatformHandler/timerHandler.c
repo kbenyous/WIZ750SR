@@ -2,6 +2,7 @@
 #include "common.h"
 #include "W7500x_board.h"
 #include "timerHandler.h"
+#include "ConfigData.h"
 #include "seg.h"
 #include "segcp.h"
 #include "deviceHandler.h"
@@ -17,6 +18,8 @@ static volatile uint8_t  hour_cnt = 0;
 static volatile uint16_t day_cnt = 0;
 static volatile uint32_t devtime_sec = 0;
 static volatile uint32_t devtime_msec = 0;
+
+volatile uint8_t flag_auto_reboot = 0;
 
 static uint8_t enable_phylink_check = 1;
 static volatile uint32_t phylink_down_time_msec;
@@ -88,10 +91,21 @@ void Timer_IRQ_Handler(void)
 		}
 		
 		/* Minute Process */
-		if(sec_cnt >= 60) //if((sec_cnt % 60) == 0) 
+		if(sec_cnt >= 60) //if((sec_cnt % 60) == 0)
 		{
+			DevConfig *dev_config = get_DevConfig_pointer();
+
 			sec_cnt = 0;
 			min_cnt++;
+
+			if(dev_config->auto_reboot_min != 0)
+			{
+				uint32_t uptime_min = (uint32_t)min_cnt
+				                    + (uint32_t)hour_cnt * 60UL
+				                    + (uint32_t)day_cnt  * 1440UL;
+				if(uptime_min >= dev_config->auto_reboot_min)
+					flag_auto_reboot = 1;
+			}
 		}
 		
 		/* Hour Process */

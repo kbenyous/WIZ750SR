@@ -153,6 +153,8 @@ void set_DevConfig_to_factory_value(void)
 	memcpy(dev_config.firmware_update_extend.fwup_server_binpath, FWUP_SERVER_BINPATH, sizeof(FWUP_SERVER_BINPATH));
 
 	dev_config.modbus_enable = MODBUS_NONE;
+
+	dev_config.auto_reboot_min = 0;	// Periodic auto-reboot disabled by default
 }
 
 void load_DevConfig_from_storage(void)
@@ -163,11 +165,14 @@ void load_DevConfig_from_storage(void)
 	read_storage(STORAGE_CONFIG, 0, &dev_config, sizeof(DevConfig));
 	read_storage(STORAGE_MAC, 0, &dev_config.network_info_common.mac, 6);
 
-	if(dev_config.packet_size == 0x0000 || dev_config.packet_size == 0xFFFF){
+	//if(dev_config.packet_size == 0x0000 || dev_config.packet_size == 0xFFFF){
+	// 0x0000 or 0xFFFF means that the storage area is not yet written with valid data, so set factory default value.
+	if(dev_config.packet_size != sizeof(DevConfig)){
+		// if the config data structure is updated, revert to factory default.
 		set_DevConfig_to_factory_value();
 		write_storage(STORAGE_CONFIG, 0, &dev_config, sizeof(DevConfig));
 	}
-	
+
 	dev_config.fw_ver[0] = MAJOR_VER;
 	dev_config.fw_ver[1] = MINOR_VER;
 	dev_config.fw_ver[2] = MAINTENANCE_VER;

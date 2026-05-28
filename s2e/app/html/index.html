@@ -195,6 +195,7 @@
 	 $('txtRip').value=o.rip;
 	 $('txtRport').value=o.rport;
 	 $('txtModbus').value=o.modbus;
+	 $('txtAreboot').value=o.areboot;
 	 if(typeof(window.external)!='undefined'){
 	 	obj=$$_ie('input','TCP Client');
 	 }else{
@@ -313,7 +314,8 @@
  	                 '&databit=' + $('selDb1').value +
  	                 '&parity=' + $('selParity1').value +
  	                 '&stopbit=' + $('selStop1').value +
- 	                 '&flow=' + $('selFlow1').value;
+ 	                 '&flow=' + $('selFlow1').value +
+ 	                 '&areboot=' + $('txtAreboot').value;
  	                 
  	setTimeout(function(){
 		 dout=new AJAX('set_devinfo.cgi', function(t){
@@ -423,7 +425,13 @@
 			</select>
 		</div>
 		<br>
-	 </div> 
+		<h3>Failsafe</h3>
+		<br>
+		<div class="ipt">
+			<p><label for="txtAreboot">Auto-reboot (min):</label><input id="txtAreboot" name="areboot" type="number" min="0" max="65535" size="20" value="0"> <span class="red">0 = disabled, max 65535</span></p>
+		</div>
+		<br>
+	 </div>
 	 <div style="margin:5px 5px; clear:both">
 	 	<center>
 	 	©Copyright 2023 WIZnet Co., Ltd.

@@ -22,4 +22,6 @@ uint16_t getDeviceUptime_msec(void);
 void set_phylink_time_check(uint8_t enable);
 uint32_t get_phylink_downtime(void);
 
+extern volatile uint8_t flag_auto_reboot;
+
 #endif /* TIMERHANDLER_H_ */
