@@ -282,7 +282,15 @@ int main(void)
     while(1) // main loop
     {
 				WDT_SetWDTLoad(0xFF0000);
-			
+
+				if(flag_auto_reboot)
+				{
+					if(dev_config->serial_info[0].serial_debug_en)
+						printf(" # Auto-reboot: %d min uptime reached, rebooting\r\n", dev_config->auto_reboot_min);
+					delay(10); // let UART drain before reset
+					NVIC_SystemReset();
+				}
+
         do_segcp();
 				
         Dev_Mode_Check(SOCK_DATA); // while DHCP operate, Device mode change(AT mode <-> GW mode) as possibility. This took it out in do_seg funcion.
@@ -628,14 +636,19 @@ void display_Dev_Info_main(void)
 
 #ifdef __USE_USERS_GPIO__
     printf(" - Hardware information: User I/O pins\r\n");
-        printf("\t- UserIO A: [%s] - %s / %s\r\n", "PC_13", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[0])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[0])]); 
-        printf("\t- UserIO B: [%s] - %s / %s\r\n", "PC_12", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[1])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[1])]); 
-        printf("\t- UserIO C: [%s] - %s / %s\r\n", "PC_09", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[2])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[2])]); 
-        printf("\t- UserIO D: [%s] - %s / %s\r\n", "PC_08", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[3])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[3])]); 
+        printf("\t- UserIO A: [%s] - %s / %s\r\n", "PC_13", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[0])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[0])]);
+        printf("\t- UserIO B: [%s] - %s / %s\r\n", "PC_12", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[1])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[1])]);
+        printf("\t- UserIO C: [%s] - %s / %s\r\n", "PC_09", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[2])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[2])]);
+        printf("\t- UserIO D: [%s] - %s / %s\r\n", "PC_08", USER_IO_TYPE_STR[get_user_io_type(USER_IO_SEL[3])], USER_IO_DIR_STR[get_user_io_direction(USER_IO_SEL[3])]);
 #endif
 
 #endif
-    
+
+    printf(" - Failsafe:\r\n");
+        printf("\t- Auto-reboot: ");
+            if(dev_config->auto_reboot_min) printf("[%d] (min)\r\n", dev_config->auto_reboot_min);
+            else printf("%s\r\n", STR_DISABLED);
+
     printf("%s\r\n", STR_BAR);
 }
 void Dev_Mode_Check(uint8_t sock)

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "common.h"
 #include "W7500x_wztoe.h"
 #include "W7500x_board.h"
@@ -48,7 +49,8 @@ void make_json_devinfo(uint8_t * buf, uint16_t * len)
                                                "\"parity\":\"%d\","\
                                                "\"stopbit\":\"%d\","\
                                                "\"flow\":\"%d\","\
-                                               "\"modbus\":\"%d\""\
+                                               "\"modbus\":\"%d\","\
+                                               "\"areboot\":\"%d\""\
                                                "});",
 		dev_config->fw_ver[0], dev_config->fw_ver[1], dev_config->fw_ver[2], STR_VERSION_STATUS,
 		dev_config->module_name,
@@ -69,7 +71,8 @@ void make_json_devinfo(uint8_t * buf, uint16_t * len)
 		dev_config->serial_info[uart_sel].parity,
 		stopbit_index[uart_sel],
 		dev_config->serial_info[uart_sel].flow_control,
-		dev_config->modbus_enable
+		dev_config->modbus_enable,
+		dev_config->auto_reboot_min
     );
 }
 
@@ -180,6 +183,24 @@ uint8_t set_devinfo(uint8_t * uri)
 	{
     dev_config->modbus_enable = ATOI(param, 10);
 		ret = 1;
+	}
+	if((param = get_http_param_value((char *)uri, "areboot", (char*)buf)))
+	{
+		// ATOI() returns uint16_t and wraps silently on overflow, so parse
+		// with atol() and validate length / digits / range explicitly.
+		size_t plen = strlen((const char *)param);
+		size_t i;
+		for(i = 0; i < plen; i++)
+			if(param[i] < '0' || param[i] > '9') break;
+		if(plen >= 1 && plen <= 5 && i == plen)
+		{
+			long val = atol((const char *)param);
+			if(val >= 0 && val <= 0xFFFF)
+			{
+				dev_config->auto_reboot_min = (uint16_t)val;
+				ret = 1;
+			}
+		}
 	}
 
 	if(ret == 1){
