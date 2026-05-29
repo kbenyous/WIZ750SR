@@ -42,11 +42,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
-#include "W7500x_gpio.h"
 #include "W7500x_uart.h"
-#include "W7500x_crg.h"
 #include "W7500x_wztoe.h"
-#include "W7500x_miim.h"
 #include "W7500x_wdt.h"
 
 
@@ -62,11 +59,12 @@
 #include "uartHandler.h"
 #include "flashHandler.h"
 #include "deviceHandler.h"
-#include "eepromHandler.h"
 
 
 #include "segcp.h"
 #include "ConfigData.h"
+#include "wizchip_conf.h"
+#include "storageHandler.h"
 
 
 /* Private typedef -----------------------------------------------------------*/

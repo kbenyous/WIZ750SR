@@ -21,6 +21,7 @@
 #include "gpioHandler.h"
 #include "timerHandler.h"
 #include "mb.h"
+#include "types/modbus_types.h"
 
 /* Private define ------------------------------------------------------------*/
 // Ring Buffer declaration

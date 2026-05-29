@@ -8,10 +8,8 @@
 #include "mbascii.h"
 #include "mbserial.h"
 
-#include "uartHandler.h"
 #include "socket.h"
 #include "W7500x_wztoe.h"
-#include "common.h"
 #include "ConfigData.h"
 #include "seg.h"
 

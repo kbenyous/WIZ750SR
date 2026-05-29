@@ -1,6 +1,5 @@
 #include <string.h>
 #include "W7500x.h"
-#include "common.h"
 #include "flashHandler.h"
 
 #ifdef _FLASH_DEBUG_

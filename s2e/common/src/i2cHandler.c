@@ -1,7 +1,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "i2cHandler.h"
-#include "eepromHandler.h"
+#include "W7500x_gpio.h"
 
 /* Private functions prototype -----------------------------------------------*/
 void I2C_delay_us(uint16_t num);

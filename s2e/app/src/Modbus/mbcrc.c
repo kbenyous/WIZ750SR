@@ -30,6 +30,7 @@
 
 /* ----------------------- Platform includes --------------------------------*/
 #include <stdint.h>
+#include "mbcrc.h"
 
 static const uint8_t aucCRCHi[] = {
     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,

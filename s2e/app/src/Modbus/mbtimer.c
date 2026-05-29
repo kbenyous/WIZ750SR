@@ -3,9 +3,8 @@
 #include <stdio.h>
 
 #include "mbtimer.h"
-#include "common.h"
-#include "W7500x_board.h"
 #include "W7500x_dualtimer.h"
+#include "W7500x.h"
 
 volatile eMBRcvState eRcvState;
 

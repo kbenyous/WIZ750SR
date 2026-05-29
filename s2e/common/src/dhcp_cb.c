@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include "dhcp.h"
 #include "ConfigData.h"
+#include "dhcp_cb.h"
+#include "wizchip_conf.h"
 
 void w7500x_dhcp_assign(void)
 {
