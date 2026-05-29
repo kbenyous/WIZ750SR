@@ -11,11 +11,8 @@ set(HEADER_FILES
     ${INCLUDE_DIR}/Serial_to_Ethernet/seg.h
     ${INCLUDE_DIR}/W7500x_it.h
     ${INCLUDE_DIR}/PlatformHandler/timerHandler.h
-    ${INCLUDE_DIR}/PlatformHandler/storageHandler.h
-    ${INCLUDE_DIR}/PlatformHandler/eepromHandler.h
     ${INCLUDE_DIR}/PlatformHandler/uartHandler.h
     ${INCLUDE_DIR}/PlatformHandler/flashHandler.h
-    ${INCLUDE_DIR}/PlatformHandler/i2cHandler.h
     ${INCLUDE_DIR}/PlatformHandler/gpioHandler.h
     ${INCLUDE_DIR}/PlatformHandler/httpHandler.h
     ${INCLUDE_DIR}/PlatformHandler/deviceHandler.h
@@ -26,8 +23,6 @@ set(HEADER_FILES
     ${INCLUDE_DIR}/Modbus/mbrtu.h
     ${INCLUDE_DIR}/Modbus/mbascii.h
     ${INCLUDE_DIR}/Modbus/mb.h
-    ${INCLUDE_DIR}/Callback/dhcp_cb.h
-    ${INCLUDE_DIR}/W7500x_board.h
     ${INCLUDE_DIR}/Configuration/util.h
     ${INCLUDE_DIR}/Configuration/segcp.h
 
@@ -41,7 +36,6 @@ set(SOURCES
     ${SRC_DIR}/PlatformHandler/timerHandler.c
     ${SRC_DIR}/PlatformHandler/httpHandler.c
     ${SRC_DIR}/PlatformHandler/isr_vector.c
-    ${SRC_DIR}/PlatformHandler/eepromHandler.c
     ${SRC_DIR}/PlatformHandler/deviceHandler.c
     ${SRC_DIR}/PlatformHandler/uartHandler.c
     ${SRC_DIR}/PlatformHandler/flashHandler.c
@@ -52,7 +46,6 @@ set(SOURCES
     ${SRC_DIR}/Modbus/mb.c
     ${SRC_DIR}/Modbus/mbtimer.c
     ${SRC_DIR}/Modbus/mbcrc.c
-    ${SRC_DIR}/Callback/dhcp_cb.c
     ${SRC_DIR}/retarget.c
     ${SRC_DIR}/Configuration/util.c
     ${SRC_DIR}/Configuration/segcp.c
@@ -76,7 +69,6 @@ target_include_directories(WIZ750SR_S2E_App PRIVATE
     ${INCLUDE_DIR}/Serial_to_Ethernet
     ${INCLUDE_DIR}/PlatformHandler
     ${INCLUDE_DIR}/Modbus
-    ${INCLUDE_DIR}/Callback
     ${INCLUDE_DIR}/Configuration
 )
 
