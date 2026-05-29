@@ -9,8 +9,10 @@ Flow (see s2e/app/src/Configuration/segcp.c and PlatformHandler/deviceHandler.c)
      so only that module replies, and its UDP source IP becomes the target.
   2. Open TCP to <device-ip>:50001 (SEGCP) and query VR / MC / MN with the
      broadcast MAC (READ privilege). Records the BEFORE version.
-  3. Send the SEGCP AB command (AppBoot mode) to the device (WRITE privilege)
-     and wait 3 s for it to reboot into its AppBoot firmware.
+  3. Send the SEGCP AB command (AppBoot mode) to the device (WRITE privilege),
+     then poll the SEGCP port until the device finishes rebooting into its
+     AppBoot firmware (chip reset + clock init + PHY auto-negotiation can take
+     well over 5 s, so a fixed wait + single connect attempt is unreliable).
   4. Open a second TCP exchange targeting the device's REAL MAC
      (WRITE privilege) with command "FW<size>". The device replies
      "FW<ip>:50002\\r\\n" and immediately switches to a TCP-listen
@@ -43,7 +45,8 @@ FWUP_PORT = 50002
 BROADCAST_MAC = b"\xff\xff\xff\xff\xff\xff"
 DEFAULT_FWUP_SIZE_LIMIT = 100 * 1024  # DEVICE_FWUP_SIZE (100 KB without __USE_APPBACKUP_AREA__)
 
-APPBOOT_WAIT = 5.0  # seconds to wait after AB command before flashing
+APPBOOT_WAIT = 3.0       # initial settle delay after AB before polling SEGCP
+APPBOOT_POLL = 45.0      # max time to wait for AppBoot SEGCP to come back up
 
 MAC_RE = re.compile(r"^[0-9A-Fa-f]{2}([:\-.])(?:[0-9A-Fa-f]{2}\1){4}[0-9A-Fa-f]{2}$")
 FW_REPLY_RE = re.compile(r"^(\d+\.\d+\.\d+\.\d+):(\d+)$")
@@ -132,6 +135,32 @@ def segcp_exchange(
         except socket.timeout:
             pass
     return parse_segcp_reply(b"".join(chunks))
+
+
+def segcp_exchange_retry(
+    ip: str, mac_target: bytes, password: str, commands: list[str],
+    *, total_wait: float = 30.0, retry_delay: float = 1.0, log=None, **kw,
+) -> dict[str, str] | None:
+    """Like segcp_exchange but keeps retrying while the TCP connect fails.
+
+    After an AB (AppBoot) reboot the device is unreachable for several seconds
+    (chip reset + 8 MHz clock init + Ethernet PHY auto-negotiation), so a single
+    3 s connect attempt times out before the AppBoot SEGCP socket is listening.
+    We poll until the device answers or total_wait elapses, then raise the last
+    connection error so the caller can report a real timeout.
+    """
+    deadline = time.monotonic() + total_wait
+    last_exc: Exception | None = None
+    while True:
+        try:
+            return segcp_exchange(ip, mac_target, password, commands, **kw)
+        except (OSError, socket.timeout) as exc:
+            last_exc = exc
+            if time.monotonic() >= deadline:
+                raise
+            if log is not None:
+                print("[*] AppBoot not reachable yet, retrying ...", file=log)
+            time.sleep(retry_delay)
 
 
 def send_appboot_cmd(ip: str, mac_bytes: bytes, password: str, *, log) -> None:
@@ -320,7 +349,10 @@ def main() -> int:
     # --- Step 2: Trigger FW SET ---
     print(f"[*] Sending FW{len(payload)} (initiate OTA) ...", file=log)
     try:
-        fw_reply = segcp_exchange(args.ip, args.mac, args.password, [f"FW{len(payload)}"])
+        fw_reply = segcp_exchange_retry(
+            args.ip, args.mac, args.password, [f"FW{len(payload)}"],
+            total_wait=APPBOOT_POLL, log=log,
+        )
     except (OSError, socket.timeout) as exc:
         print(f"[!] FW command failed: {exc}", file=sys.stderr)
         if args.script:
