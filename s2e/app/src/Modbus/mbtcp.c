@@ -8,6 +8,7 @@
 #include "mbascii.h"
 #include "common.h"
 #include "ConfigData.h"
+#include "mbtcp.h"
 
 #define MB_TCP_BUF_SIZE     ( 256 + 7 ) /* Must hold a complete Modbus TCP frame. */
 

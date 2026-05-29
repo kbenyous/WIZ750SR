@@ -1,3 +1,6 @@
+#include "W7500x.h"
+#include "W7500x_it.h"
+#include "timerHandler.h"
 /**
   ******************************************************************************
   * @file    WZTOE/Loopback/W7500x_it.c
@@ -20,10 +23,6 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "W7500x.h"
-#include "common.h"
-#include "W7500x_board.h"
-#include "timerHandler.h"
 
 
 /* Private typedef -----------------------------------------------------------*/

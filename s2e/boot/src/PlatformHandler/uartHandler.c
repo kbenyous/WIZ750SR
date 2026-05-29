@@ -1,9 +1,7 @@
 #include <string.h>
-#include "common.h"
 #include "W7500x_uart.h"
-#include "W7500x_board.h"
-#include "ConfigData.h"
 #include "uartHandler.h"
+#include "W7500x.h"
 
 /* Private typedef -----------------------------------------------------------*/
 

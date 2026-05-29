@@ -1,4 +1,3 @@
-#include "W7500x.h"
 #include "W7500x_gpio.h"
 
 #include "common.h"
@@ -8,6 +7,7 @@
 
 #ifdef _GPIO_DEBUG_
 	#include <stdio.h>
+#include "W7500x_adc.h"
 #endif
 
 #ifdef __USE_USERS_GPIO__

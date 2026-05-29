@@ -1,12 +1,9 @@
 #include <stdlib.h>
-#include "W7500x_uart.h"
 
 #include "seg.h"
 #include "uartHandler.h"
 #include "common.h"
 #include "mbserial.h"
-#include "mbrtu.h"
-#include "mbascii.h"
 
 BUFFER_DECLARATION(data_rx);
 

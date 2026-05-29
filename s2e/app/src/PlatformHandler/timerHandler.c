@@ -1,5 +1,4 @@
 #include "W7500x_dualtimer.h"
-#include "common.h"
 #include "W7500x_board.h"
 #include "timerHandler.h"
 #include "ConfigData.h"
@@ -10,6 +9,7 @@
 
 #include "dhcp.h"
 #include "dns.h"
+#include "W7500x.h"
 
 static volatile uint16_t msec_cnt = 0;
 static volatile uint8_t  sec_cnt = 0;

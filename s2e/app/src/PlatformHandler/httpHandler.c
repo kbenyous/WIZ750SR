@@ -1,16 +1,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include "common.h"
-#include "W7500x_wztoe.h"
-#include "W7500x_board.h"
-#include "ConfigData.h"
-#include "storageHandler.h"
 #include "deviceHandler.h"
-#include "segcp.h"
 #include "uartHandler.h"
-#include "httpHandler.h"
 #include "httpParser.h"
 #include "flashHandler.h"
 
@@ -186,21 +178,8 @@ uint8_t set_devinfo(uint8_t * uri)
 	}
 	if((param = get_http_param_value((char *)uri, "areboot", (char*)buf)))
 	{
-		// ATOI() returns uint16_t and wraps silently on overflow, so parse
-		// with atol() and validate length / digits / range explicitly.
-		size_t plen = strlen((const char *)param);
-		size_t i;
-		for(i = 0; i < plen; i++)
-			if(param[i] < '0' || param[i] > '9') break;
-		if(plen >= 1 && plen <= 5 && i == plen)
-		{
-			long val = atol((const char *)param);
-			if(val >= 0 && val <= 0xFFFF)
-			{
-				dev_config->auto_reboot_min = (uint16_t)val;
-				ret = 1;
-			}
-		}
+		dev_config->auto_reboot_min = ATOI(param, 10);
+		ret = 1;
 	}
 
 	if(ret == 1){

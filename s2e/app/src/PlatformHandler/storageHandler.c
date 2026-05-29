@@ -1,7 +1,5 @@
 
 #include <string.h>
-#include "common.h"
-#include "W7500x_board.h"
 #include "flashHandler.h"
 #include "deviceHandler.h"
 #include "storageHandler.h"

@@ -19,6 +19,7 @@
 #include "types/uart_types.h"
 #include "types/device_types.h"
 #include "types/modbus_types.h"
+#include "wizchip_conf.h"
 
 extern void delay(__IO uint32_t milliseconds);
 

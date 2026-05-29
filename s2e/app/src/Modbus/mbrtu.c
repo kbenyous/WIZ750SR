@@ -4,10 +4,8 @@
 #include <stdbool.h>
 
 #include "common.h"
-#include "ConfigData.h"
 #include "uartHandler.h"
 
-#include "mbcrc.h"
 #include "mbrtu.h"
 #include "mbtcp.h"
 #include "mbtimer.h"

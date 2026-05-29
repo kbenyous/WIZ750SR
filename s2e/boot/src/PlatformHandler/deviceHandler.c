@@ -3,7 +3,6 @@
 #include "common.h"
 #include "W7500x_board.h"
 #include "ConfigData.h"
-#include "wizchip_conf.h"
 #include "W7500x_wztoe.h"
 #include "socket.h"
 #include "segcp.h"

@@ -9,6 +9,7 @@
 #include "seg.h"
 
 #include <stdio.h> // for debugging
+#include "W7500x.h"
 
 /* Private typedef -----------------------------------------------------------*/
 

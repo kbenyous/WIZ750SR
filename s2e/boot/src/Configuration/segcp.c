@@ -10,7 +10,6 @@
 #include "ConfigData.h"
 #include "storageHandler.h"
 #include "deviceHandler.h"
-#include "flashHandler.h"
 
 #include "segcp.h"
 #include "util.h"

@@ -14,7 +14,9 @@
 #include "mb.h"
 #include "mbrtu.h"
 #include "mbascii.h"
-#include "mbserial.h"
+#include "mbtimer.h"
+#include "ConfigData.h"
+#include "types/modbus_types.h"
 
 /* Private define ------------------------------------------------------------*/
 // Ring Buffer

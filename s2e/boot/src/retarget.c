@@ -21,7 +21,6 @@
 
 #include <stdio.h>
 #include "W7500x_uart.h"
-#include "common.h"
 
 #define USING_UART2
 
@@ -76,6 +75,7 @@ void _sys_exit(int return_code) {
 /******************************************************************************/
 #include <sys/stat.h>
 #include <unistd.h>
+#include "W7500x.h"
 
 __attribute__ ((used))  int _write (int  __attribute__ ((unused)) fd, char *ptr, int len){
     for (int i=0; i<len;i++) {
