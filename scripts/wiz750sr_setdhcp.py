@@ -157,7 +157,7 @@ def discover(
 # ---------------------------------------------------------------------------
 
 def set_dhcp(
-    device_ip: str,
+    dest_ip: str,
     device_mac: str,
     password: str,
     port: int,
@@ -165,7 +165,15 @@ def set_dhcp(
     recv_timeout: float = 1.0,
     log=sys.stdout,
 ) -> bool:
-    """Send IM=1 / SV / RT to a single device. Returns True if packet was sent."""
+    """Send IM=1 / SV / RT to a single device. Returns True if packet was sent.
+
+    `dest_ip` is the L3 destination — pass the broadcast address rather than
+    the device's own IP. The device grants SEGCP WRITE privilege based on the
+    MA field matching its real MAC, not on the packet destination (see
+    proc_SEGCP_udp in segcp.c). Broadcasting keeps the command reachable even
+    when the device sits on a foreign subnet (e.g. after a factory reset reverts
+    it to the static default 192.168.11.2), which a unicast cannot route to.
+    """
     mac_bytes = mac_str_to_bytes(device_mac)
     # Targeting the device's real MAC grants SEGCP WRITE privilege,
     # which is required to SET IM, SV and RT (see segcp.c).
@@ -173,12 +181,13 @@ def set_dhcp(
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.bind(("", 0))
     sock.settimeout(recv_timeout)
 
-    print(f"[*] Sending DHCP SET to {device_ip} (MAC {device_mac}) ...", file=log)
+    print(f"[*] Sending DHCP SET to {dest_ip} (MAC {device_mac}) ...", file=log)
     try:
-        sock.sendto(packet, (device_ip, port))
+        sock.sendto(packet, (dest_ip, port))
         # The device may or may not reply before rebooting — we try to read
         # the reply but do not fail if it doesn't arrive.
         try:
@@ -197,7 +206,7 @@ def set_dhcp(
             print(f"[~] No reply from {device_mac} (device may be rebooting).", file=log)
         return True
     except OSError as exc:
-        print(f"[!] sendto to {device_ip} failed: {exc}", file=sys.stderr)
+        print(f"[!] sendto to {dest_ip} failed: {exc}", file=sys.stderr)
         return False
     finally:
         sock.close()
@@ -324,8 +333,11 @@ def main() -> int:
     # --- Phase 2: set DHCP on each target ---
     print(f"\n[*] Configuring {len(targets)} device(s) to use DHCP ...")
     ok_macs: list[str] = []
-    for mac, (ip, _info) in targets.items():
-        sent = set_dhcp(ip, mac, args.password, args.port)
+    for mac, (_ip, _info) in targets.items():
+        # Send to the broadcast address (not the device's own IP): the device
+        # matches on the MA field, so a factory-reset module on a foreign subnet
+        # (default 192.168.11.2) is still reachable.
+        sent = set_dhcp(args.broadcast, mac, args.password, args.port)
         if sent:
             ok_macs.append(mac)
 
