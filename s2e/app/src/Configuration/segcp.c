@@ -269,7 +269,10 @@ uint8_t parse_SEGCP(uint8_t * pmsg, uint8_t * param)
     }
     else
     {
-        strcpy(param, (uint8_t*)&pmsg[2]);
+        // Bound the copy: param buffers are SEGCP_PARAM_MAX-sized (smallest is tpar[SEGCP_PARAM_MAX+1]).
+        // Any param longer than SEGCP_PARAM_MAX is invalid by design and gets truncated here.
+        strncpy(param, (uint8_t*)&pmsg[2], SEGCP_PARAM_MAX);
+        param[SEGCP_PARAM_MAX] = 0;
     }
 
 #ifdef _SEGCP_DEBUG_
@@ -813,7 +816,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                             }
                             else
                             {
-                                sprintf(dev_config->module_name, "%s", param);
+                                strcpy(dev_config->module_name, param);
                             }
                         }
                         break;
@@ -840,6 +843,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                         {
                             dev_config->options.dns_use = SEGCP_ENABLE;
                             if(param[0] == SEGCP_NULL) dev_config->options.dns_domain_name[0] = 0;
+                            else if(param_len > sizeof(dev_config->options.dns_domain_name)-1) ret |= SEGCP_RET_ERR_INVALIDPARAM;
                             else strcpy(dev_config->options.dns_domain_name, param);
                         }
                         
@@ -940,7 +944,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                         else
                         {
                             if(param[0] == SEGCP_NULL) dev_config->options.pw_connect[0] = 0;
-                            else sprintf(dev_config->options.pw_connect, "%s", param);
+                            else strcpy(dev_config->options.pw_connect, param);
                         }
                         break;
                     case SEGCP_SP:
@@ -951,7 +955,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                         else
                         {
                             if(param[0] == SEGCP_NULL) dev_config->options.pw_search[0] = 0;
-                            else sprintf(dev_config->options.pw_search, "%s", param);
+                            else strcpy(dev_config->options.pw_search, param);
                         }
                         break;
                     case SEGCP_FW:
@@ -1159,7 +1163,7 @@ uint16_t proc_SEGCP(uint8_t* segcp_req, uint8_t* segcp_rep)
                                 if(param[i] < '0' || param[i] > '9') { digits_only = 0; break; }
                             tmp_long = atol(param);
                             if(param_len < 1 || param_len > 5 || !digits_only ||
-                               tmp_long < 0 || tmp_long > 0xFFFF)
+                               tmp_long > 0xFFFF)
                                 ret |= SEGCP_RET_ERR_INVALIDPARAM;
                             else
                                 dev_config->auto_reboot_min = (uint16_t)tmp_long;
